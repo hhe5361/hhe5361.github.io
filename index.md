@@ -32,15 +32,6 @@
             </p>
         </section>
 
-        <section id="my-posts">
-            <h2>My Posts</h2>
-            <ul>
-                {% for post in site.posts %}
-                    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-                {% endfor %}
-            </ul>
-        </section>
-
         <footer>
             <p>&copy; 2024 HHE Blog. All rights reserved.</p>
         </footer>
