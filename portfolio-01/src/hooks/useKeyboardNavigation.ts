@@ -1,51 +1,105 @@
 import { useEffect } from 'react';
 
-const sections = ['about', 'projects', 'skills', 'contact'];
+const defaultSections = ['about', 'projects', 'skills', 'contact'];
 
-export const useKeyboardNavigation = () => {
+export const useKeyboardNavigation = (
+  enabled = true,
+  sections: string[] = defaultSections,
+) => {
+  const sectionKey = sections.join('|');
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Only handle if not typing in an input
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+    if (!enabled) {
+      return undefined;
+    }
+
+    const scrollToSection = (sectionId: string | undefined) => {
+      if (!sectionId) {
+        return false;
+      }
+
+      const element = document.getElementById(sectionId);
+
+      if (!element) {
+        return false;
+      }
+
+      element.scrollIntoView({ behavior: 'smooth' });
+      return true;
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement
+      ) {
         return;
       }
 
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section);
-        if (!element) return false;
+      const availableSections = sections.filter((sectionId) =>
+        document.getElementById(sectionId),
+      );
+
+      if (availableSections.length === 0) {
+        return;
+      }
+
+      const currentSection = availableSections.find((sectionId) => {
+        const element = document.getElementById(sectionId);
+
+        if (!element) {
+          return false;
+        }
+
         const rect = element.getBoundingClientRect();
         return rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
       });
 
-      const currentIndex = currentSection ? sections.indexOf(currentSection) : -1;
+      const currentIndex = currentSection
+        ? availableSections.indexOf(currentSection)
+        : -1;
 
-      switch (e.key) {
+      switch (event.key) {
         case 'ArrowDown':
-        case 'PageDown':
-          e.preventDefault();
-          if (currentIndex < sections.length - 1) {
-            document.getElementById(sections[currentIndex + 1])?.scrollIntoView({ behavior: 'smooth' });
+        case 'PageDown': {
+          const nextSectionId =
+            currentIndex >= 0
+              ? availableSections[currentIndex + 1]
+              : availableSections[0];
+
+          if (scrollToSection(nextSectionId)) {
+            event.preventDefault();
           }
           break;
+        }
         case 'ArrowUp':
-        case 'PageUp':
-          e.preventDefault();
-          if (currentIndex > 0) {
-            document.getElementById(sections[currentIndex - 1])?.scrollIntoView({ behavior: 'smooth' });
+        case 'PageUp': {
+          const previousSectionId =
+            currentIndex > 0
+              ? availableSections[currentIndex - 1]
+              : availableSections[0];
+
+          if (scrollToSection(previousSectionId)) {
+            event.preventDefault();
           }
           break;
+        }
         case 'Home':
-          e.preventDefault();
-          document.getElementById(sections[0])?.scrollIntoView({ behavior: 'smooth' });
+          if (scrollToSection(availableSections[0])) {
+            event.preventDefault();
+          }
           break;
         case 'End':
-          e.preventDefault();
-          document.getElementById(sections[sections.length - 1])?.scrollIntoView({ behavior: 'smooth' });
+          if (scrollToSection(availableSections[availableSections.length - 1])) {
+            event.preventDefault();
+          }
+          break;
+        default:
           break;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [enabled, sectionKey, sections]);
 };

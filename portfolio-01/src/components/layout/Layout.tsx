@@ -3,10 +3,21 @@ import { motion } from 'framer-motion';
 import { ReactNode, useEffect } from 'react';
 import { theme } from '../../styles/theme';
 import { useKeyboardNavigation } from '../../hooks/useKeyboardNavigation';
+import type { NavigationLink } from '../../features/posts/types';
 
 interface LayoutProps {
   children: ReactNode;
+  navigationLinks?: NavigationLink[];
+  logoHref?: string;
+  enableKeyboardNavigation?: boolean;
 }
+
+const defaultNavigationLinks: NavigationLink[] = [
+  { href: '#about', label: 'About', ariaLabel: 'About section' },
+  { href: '#projects', label: 'Projects', ariaLabel: 'Projects section' },
+  { href: '#skills', label: 'Skills', ariaLabel: 'Skills section' },
+  { href: '#contact', label: 'Contact', ariaLabel: 'Contact section' },
+];
 
 const LayoutWrapper = styled.div`
   @media print {
@@ -90,7 +101,7 @@ const Nav = styled.nav`
   }
 `;
 
-const Logo = styled(motion.div)`
+const Logo = styled(motion.a)`
   color: ${theme.colors.light};
   font-family: ${theme.fonts.heading};
   font-size: 1.5rem;
@@ -159,10 +170,19 @@ const Footer = styled.footer`
   }
 `;
 
-export const Layout = ({ children }: LayoutProps) => {
-  useKeyboardNavigation();
+export const Layout = ({
+  children,
+  navigationLinks = defaultNavigationLinks,
+  logoHref = '#about',
+  enableKeyboardNavigation = true,
+}: LayoutProps) => {
+  useKeyboardNavigation(enableKeyboardNavigation);
 
   useEffect(() => {
+    if (!enableKeyboardNavigation) {
+      return;
+    }
+
     // Add keyboard navigation instructions to console
     console.info(
       'Keyboard Navigation:\n',
@@ -170,7 +190,7 @@ export const Layout = ({ children }: LayoutProps) => {
       '- Home: Go to top\n',
       '- End: Go to bottom'
     );
-  }, []);
+  }, [enableKeyboardNavigation]);
 
   return (
     <LayoutWrapper>
@@ -182,19 +202,25 @@ export const Layout = ({ children }: LayoutProps) => {
         <Nav role="navigation" aria-label="Main navigation">
           <div className="container">
             <Logo
+              href={logoHref}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              role="heading"
-              aria-level={1}
+              aria-label="Go to portfolio home"
             >
               Portfolio
             </Logo>
             <NavLinks role="list">
-              <a href="#about" role="listitem" aria-label="About section">About</a>
-              <a href="#projects" role="listitem" aria-label="Projects section">Projects</a>
-              <a href="#skills" role="listitem" aria-label="Skills section">Skills</a>
-              <a href="#contact" role="listitem" aria-label="Contact section">Contact</a>
+              {navigationLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  role="listitem"
+                  aria-label={link.ariaLabel}
+                >
+                  {link.label}
+                </a>
+              ))}
             </NavLinks>
           </div>
         </Nav>
