@@ -5,7 +5,7 @@ import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/portfolio-01/',
+  base: '/',
   plugins: [
     react({
       babel: {
@@ -25,7 +25,7 @@ export default defineConfig({
       compressionOptions: { level: 9 }
     }),
     visualizer({
-      open: true,
+      open: false,
       gzipSize: true,
       brotliSize: true,
     })
