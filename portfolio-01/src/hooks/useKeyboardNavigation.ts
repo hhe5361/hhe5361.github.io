@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const defaultSections = ['about', 'projects', 'skills', 'contact'];
+const defaultSections = ['about', 'portfolio', 'contact'];
 
 export const useKeyboardNavigation = (
   enabled = true,

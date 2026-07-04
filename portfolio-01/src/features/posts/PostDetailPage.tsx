@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { FaArrowLeft, FaCalendarAlt, FaExternalLinkAlt, FaGithub, FaRegClock } from 'react-icons/fa';
+import { FaArrowLeft } from 'react-icons/fa';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { buildHomeHref } from './routes';
 import type { Post } from './types';
@@ -10,29 +10,23 @@ const PageSection = styled.section`
   padding: ${theme.spacing.lg} 0 ${theme.spacing.xl};
 
   @media (min-width: ${theme.breakpoints.md}) {
-    padding: ${theme.spacing.xl} 0;
+    padding: ${theme.spacing.lg} 0 ${theme.spacing.xl};
   }
+`;
+
+const DetailContainer = styled.div`
+  width: min(94%, 1180px);
+  margin: 0 auto;
 `;
 
 const ArticleShell = styled.article`
-  max-width: 900px;
+  max-width: 1120px;
   margin: 0 auto;
-  background: ${theme.colors.glass.background};
-  border: 1px solid ${theme.colors.glass.border};
-  border-radius: 28px;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
 `;
 
-const HeroPanel = styled.div<{ coverImage?: string }>`
-  padding: ${theme.spacing.xl} ${theme.spacing.lg};
-  background:
-    linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(15, 23, 42, 0.85) 100%),
-    ${props => (props.coverImage ? `url(${props.coverImage}) center / cover no-repeat` : theme.colors.gradient.main)};
-
-  @media (min-width: ${theme.breakpoints.md}) {
-    padding: calc(${theme.spacing.xl} * 1.25);
-  }
+const HeroPanel = styled.div`
+  padding-bottom: ${theme.spacing.lg};
+  border-bottom: 1px solid ${theme.colors.border};
 `;
 
 const BackLink = styled.a`
@@ -40,65 +34,56 @@ const BackLink = styled.a`
   align-items: center;
   gap: ${theme.spacing.sm};
   color: ${theme.colors.accent};
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: ${theme.spacing.lg};
 `;
 
 const HeroTitle = styled.h1`
-  font-size: clamp(2.2rem, 5vw, 3.5rem);
-  color: ${theme.colors.light};
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: ${theme.colors.heading};
   margin-bottom: ${theme.spacing.md};
 `;
 
 const HeroSummary = styled.p`
   max-width: 720px;
-  color: ${theme.colors.textLight};
+  color: ${theme.colors.text};
   font-size: clamp(1rem, 2vw, 1.15rem);
   line-height: 1.8;
-  opacity: 0.96;
 `;
 
 const MetaRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${theme.spacing.md};
-  margin-top: ${theme.spacing.lg};
-  color: ${theme.colors.textLight};
+  margin-top: ${theme.spacing.md};
+  color: ${theme.colors.textMuted};
 `;
 
-const MetaItem = styled.div`
+const MetaItem = styled.p`
   display: inline-flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.45);
-  border: 1px solid ${theme.colors.glass.border};
+  gap: ${theme.spacing.xs};
+  color: ${theme.colors.textMuted};
+  font-size: 0.84rem;
 `;
 
 const TagList = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${theme.spacing.sm};
-  margin-top: ${theme.spacing.lg};
+  margin-top: ${theme.spacing.md};
 `;
 
 const Tag = styled.span`
   display: inline-flex;
   align-items: center;
-  padding: 0.45rem 0.8rem;
+  padding: 0.35rem 0.65rem;
   border-radius: 999px;
-  background: ${theme.colors.glass.card};
+  background: ${theme.colors.surface};
   color: ${theme.colors.accent};
-  font-size: 0.9rem;
-  font-weight: 600;
-`;
-
-const ActionRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${theme.spacing.md};
-  margin-top: ${theme.spacing.xl};
+  border: 1px solid ${theme.colors.border};
+  font-size: 0.85rem;
+  font-weight: 700;
 `;
 
 const ActionLink = styled.a`
@@ -118,11 +103,7 @@ const ActionLink = styled.a`
 `;
 
 const ArticleBody = styled.div`
-  padding: ${theme.spacing.xl} ${theme.spacing.lg};
-
-  @media (min-width: ${theme.breakpoints.md}) {
-    padding: calc(${theme.spacing.xl} * 1.1);
-  }
+  padding-top: ${theme.spacing.xl};
 `;
 
 const NotFoundPanel = styled.div`
@@ -160,9 +141,9 @@ export const PostDetailPage = ({ post, requestedSlug }: PostDetailPageProps) => 
             <p>
               No post matched <code>{requestedSlug}</code>. Check the markdown filename or slug frontmatter.
             </p>
-            <ActionLink href={buildHomeHref('projects')}>
+            <ActionLink href={buildHomeHref('portfolio')}>
               <FaArrowLeft aria-hidden="true" />
-              Back to Featured Projects
+              Back to Portfolio
             </ActionLink>
           </NotFoundPanel>
         </div>
@@ -172,26 +153,22 @@ export const PostDetailPage = ({ post, requestedSlug }: PostDetailPageProps) => 
 
   return (
     <PageSection aria-label={post.title}>
-      <div className="container">
+      <DetailContainer>
         <ArticleShell>
-          <HeroPanel coverImage={post.coverImage}>
-            <BackLink href={buildHomeHref('projects')}>
+          <HeroPanel>
+            <BackLink href={buildHomeHref('portfolio')}>
               <FaArrowLeft aria-hidden="true" />
-              Back to Featured Projects
+              Back to Portfolio
             </BackLink>
             <HeroTitle>{post.title}</HeroTitle>
             <HeroSummary>{post.summary}</HeroSummary>
             <MetaRow>
               {post.formattedDate ? (
                 <MetaItem>
-                  <FaCalendarAlt aria-hidden="true" />
+                  <span aria-hidden="true">📅</span>
                   <span>{post.formattedDate}</span>
                 </MetaItem>
               ) : null}
-              <MetaItem>
-                <FaRegClock aria-hidden="true" />
-                <span>{post.readingTimeMinutes} min read</span>
-              </MetaItem>
             </MetaRow>
             {post.techStack.length > 0 ? (
               <TagList aria-label="Technology stack">
@@ -200,26 +177,12 @@ export const PostDetailPage = ({ post, requestedSlug }: PostDetailPageProps) => 
                 ))}
               </TagList>
             ) : null}
-            <ActionRow>
-              {post.githubUrl ? (
-                <ActionLink href={post.githubUrl} target="_blank" rel="noopener noreferrer">
-                  <FaGithub aria-hidden="true" />
-                  View repository
-                </ActionLink>
-              ) : null}
-              {post.liveUrl ? (
-                <ActionLink href={post.liveUrl} target="_blank" rel="noopener noreferrer">
-                  <FaExternalLinkAlt aria-hidden="true" />
-                  Visit live site
-                </ActionLink>
-              ) : null}
-            </ActionRow>
           </HeroPanel>
           <ArticleBody>
             <MarkdownRenderer markdown={post.content} />
           </ArticleBody>
         </ArticleShell>
-      </div>
+      </DetailContainer>
     </PageSection>
   );
 };

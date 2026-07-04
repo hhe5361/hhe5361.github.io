@@ -11,8 +11,7 @@ import { theme } from './styles/theme';
 
 const detailNavigationLinks: NavigationLink[] = [
   { href: buildHomeHref('about'), label: 'Home', ariaLabel: 'Return to portfolio home' },
-  { href: buildHomeHref('projects'), label: 'Projects', ariaLabel: 'Go to featured projects' },
-  { href: buildHomeHref('skills'), label: 'Skills', ariaLabel: 'Go to skills section' },
+  { href: buildHomeHref('portfolio'), label: 'Portfolio', ariaLabel: 'Go to portfolio projects' },
   { href: buildHomeHref('contact'), label: 'Contact', ariaLabel: 'Go to contact section' },
 ];
 

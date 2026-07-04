@@ -15,23 +15,69 @@ summary: ""
 
 Write the first paragraph as a compact project summary if you want the card excerpt to be generated automatically.
 
-## Overview
+## Project Summary
 
-Describe what the project is and why it matters.
+---
 
-## Problem
+**Period** : YYYY.MM - YYYY.MM
 
-Explain the problem or context that led to this project.
+**Team Size** : N명
 
-## Approach
+**Tech Stack** : Java / Spring, Go / Gin, AWS, Docker
 
-Describe the implementation approach, architecture, and trade-offs.
+**Description** : 구현 구조, 핵심 기능, 결과를 간단히 적습니다.
 
-## Result
+## My Role
 
-Document the outcome, what improved, and what you learned.
+---
 
-## Notes
+- 담당한 기능 또는 모듈
+- 주요 의사결정
+- 협업 범위
 
-- Add screenshots or links if needed.
-- You can use headings, lists, quotes, links, and fenced code blocks.
+## Troubleshooting
+
+### Issue 1. 이슈 제목
+
+- **Situation**: 어떤 상황에서 문제가 발생했는지 적습니다.
+- **Task**: 내가 해결해야 했던 목표를 적습니다.
+- **Action**: 실제로 취한 접근과 구현 내용을 적습니다.
+- **Result**: 결과, 개선 수치, 배운 점을 적습니다.
+
+![이슈 화면 설명](/images/project-name/issue-1-1.png)
+![개선 후 화면 설명](/images/project-name/issue-1-2.png)
+
+### Issue 2. 이슈 제목
+
+- **Situation**:
+- **Task**:
+- **Action**:
+- **Result**:
+
+### Issue 3. 이슈 제목
+
+- **Situation**:
+- **Task**:
+- **Action**:
+- **Result**:
+
+### Issue 4. 이슈 제목
+
+- **Situation**:
+- **Task**:
+- **Action**:
+- **Result**:
+
+### Issue 5. 이슈 제목
+
+- **Situation**:
+- **Task**:
+- **Action**:
+- **Result**:
+
+### Issue 6. 이슈 제목
+
+- **Situation**:
+- **Task**:
+- **Action**:
+- **Result**:

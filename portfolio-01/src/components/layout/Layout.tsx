@@ -14,8 +14,7 @@ interface LayoutProps {
 
 const defaultNavigationLinks: NavigationLink[] = [
   { href: '#about', label: 'About', ariaLabel: 'About section' },
-  { href: '#projects', label: 'Projects', ariaLabel: 'Projects section' },
-  { href: '#skills', label: 'Skills', ariaLabel: 'Skills section' },
+  { href: '#portfolio', label: 'Portfolio', ariaLabel: 'Portfolio section' },
   { href: '#contact', label: 'Contact', ariaLabel: 'Contact section' },
 ];
 
@@ -56,11 +55,7 @@ const LayoutWrapper = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(
-      circle at 70% 30%,
-      ${theme.colors.accent}15 0%,
-      transparent 100%
-    );
+    background: linear-gradient(90deg, rgba(185, 28, 28, 0.04), transparent 40%);
     pointer-events: none;
     z-index: 0;
   }
@@ -68,7 +63,8 @@ const LayoutWrapper = styled.div`
 
 const Header = styled.header`
   background: ${theme.colors.glass.background};
-  backdrop-filter: blur(8px);
+  border-bottom: 1px solid ${theme.colors.border};
+  backdrop-filter: blur(12px);
   padding: ${theme.spacing.md} 0;
   position: fixed;
   width: 100%;
@@ -77,15 +73,6 @@ const Header = styled.header`
 
   @media print {
     display: none;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    right: 0;
-    height: 20px;
-    background: linear-gradient(to bottom, ${theme.colors.glass.background}, transparent);
   }
 `;
 
@@ -102,7 +89,7 @@ const Nav = styled.nav`
 `;
 
 const Logo = styled(motion.a)`
-  color: ${theme.colors.light};
+  color: ${theme.colors.heading};
   font-family: ${theme.fonts.heading};
   font-size: 1.5rem;
   font-weight: 700;
@@ -113,15 +100,15 @@ const NavLinks = styled.div`
   gap: ${theme.spacing.lg};
 
   a {
-    color: ${theme.colors.textLight};
+    color: ${theme.colors.text};
     transition: all ${theme.transitions.default};
-    font-weight: 500;
+    font-weight: 700;
     padding: ${theme.spacing.xs} ${theme.spacing.sm};
     border-radius: 4px;
 
     &:hover {
-      color: ${theme.colors.light};
-      background-color: rgba(255, 255, 255, 0.1);
+      color: ${theme.colors.accent};
+      background-color: ${theme.colors.muted};
     }
   }
 
@@ -153,21 +140,12 @@ const SkipLink = styled.a`
 `;
 
 const Footer = styled.footer`
-  background: ${theme.colors.glass.background};
-  backdrop-filter: blur(8px);
-  color: ${theme.colors.textLight};
+  background: ${theme.colors.surface};
+  border-top: 1px solid ${theme.colors.border};
+  color: ${theme.colors.textMuted};
   padding: ${theme.spacing.lg} 0;
   text-align: center;
   position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: 0;
-    right: 0;
-    height: 20px;
-    background: linear-gradient(to top, ${theme.colors.glass.background}, transparent);
-  }
 `;
 
 export const Layout = ({
@@ -208,7 +186,7 @@ export const Layout = ({
               transition={{ duration: 0.5 }}
               aria-label="Go to portfolio home"
             >
-              Portfolio
+              Hyoeun Hwang
             </Logo>
             <NavLinks role="list">
               {navigationLinks.map((link) => (
@@ -230,7 +208,7 @@ export const Layout = ({
       </Main>
       <Footer role="contentinfo">
         <div className="container">
-          <p>© {new Date().getFullYear()} Your Name. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Hyoeun Hwang. All rights reserved.</p>
         </div>
       </Footer>
     </LayoutWrapper>
