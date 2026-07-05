@@ -39,7 +39,7 @@ const BackLink = styled.a`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(1.6rem, 3.5vw, 2.45rem);
   color: ${theme.colors.heading};
   margin-bottom: ${theme.spacing.md};
 `;
@@ -47,7 +47,7 @@ const HeroTitle = styled.h1`
 const HeroSummary = styled.p`
   max-width: 720px;
   color: ${theme.colors.text};
-  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-size: clamp(0.95rem, 1.7vw, 1.05rem);
   line-height: 1.8;
 `;
 

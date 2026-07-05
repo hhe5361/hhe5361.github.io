@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { theme } from '../../styles/theme';
 
 type MarkdownBlock =
@@ -8,6 +8,7 @@ type MarkdownBlock =
   | { type: 'blockquote'; content: string }
   | { type: 'unordered-list'; items: string[] }
   | { type: 'ordered-list'; items: string[] }
+  | { type: 'table'; header: string[]; rows: string[][] }
   | { type: 'code'; language: string; content: string }
   | { type: 'image'; alt: string; src: string }
   | { type: 'divider' };
@@ -19,21 +20,17 @@ const Content = styled.div`
 
   h2 {
     color: ${theme.colors.heading};
-    font-size: clamp(1.35rem, 3vw, 1.75rem);
+    font-size: clamp(1.2rem, 2.5vw, 1.55rem);
     margin-top: ${theme.spacing.lg};
-    padding-top: ${theme.spacing.lg};
-    border-top: 1px solid ${theme.colors.border};
   }
 
   h2:first-of-type {
     margin-top: 0;
-    padding-top: 0;
-    border-top: 0;
   }
 
   h3 {
     color: ${theme.colors.heading};
-    font-size: 1.05rem;
+    font-size: 0.98rem;
     margin-top: ${theme.spacing.md};
   }
 
@@ -44,25 +41,47 @@ const Content = styled.div`
   }
 
   p {
+    font-size: 0.95rem;
     line-height: 1.8;
   }
 
   ul,
   ol {
-    display: grid;
-    gap: ${theme.spacing.sm};
-    padding: ${theme.spacing.md} ${theme.spacing.lg};
-    border: 1px solid ${theme.colors.border};
-    border-radius: 8px;
-    background: ${theme.colors.surface};
+    margin: 0;
+    padding-left: 1.25rem;
+    border: 0;
+    background: transparent;
   }
 
   li {
+    font-size: 0.95rem;
     line-height: 1.75;
+    margin: 0 0 ${theme.spacing.sm};
   }
 
   li strong:first-child {
     color: ${theme.colors.accent};
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: ${theme.spacing.sm};
+    font-size: 0.92rem;
+  }
+
+  th,
+  td {
+    padding: 0.75rem 0.85rem;
+    border: 1px solid ${theme.colors.border};
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: ${theme.colors.muted};
+    color: ${theme.colors.heading};
+    font-weight: 700;
   }
 
   blockquote {
@@ -152,31 +171,76 @@ const IssueCard = styled.article`
 
   ul,
   ol {
-    padding: 0;
+    padding-left: 1.25rem;
     border: 0;
     background: transparent;
-    list-style: none;
+    display: block;
+  }
+
+  h4 {
+    margin: ${theme.spacing.sm} 0 ${theme.spacing.sm};
+    padding-bottom: ${theme.spacing.xs};
+    border-bottom: 1px solid ${theme.colors.border};
+    color: ${theme.colors.accent};
+    font-size: 1rem;
   }
 
   li {
-    padding-top: ${theme.spacing.sm};
-    border-top: 1px solid ${theme.colors.border};
-  }
-
-  li:first-of-type {
-    padding-top: 0;
-    border-top: 0;
+    margin: 0 0 ${theme.spacing.sm};
+    padding: 0;
+    border: 0;
   }
 
   img {
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
+    max-height: 22rem;
+    object-fit: contain;
+    background: ${theme.colors.background};
+  }
+`;
+
+const IssueCardBody = styled.div<{ $expanded: boolean; $collapsible: boolean }>`
+  position: relative;
+  display: grid;
+  gap: ${theme.spacing.md};
+  overflow: hidden;
+  max-height: ${({ $expanded, $collapsible }) => ($expanded || !$collapsible ? 'none' : '34rem')};
+`;
+
+const IssueCardFade = styled.div<{ $visible: boolean }>`
+  display: ${({ $visible }) => ($visible ? 'block' : 'none')};
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4.5rem;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), ${theme.colors.surface});
+  pointer-events: none;
+`;
+
+const IssueExpandButton = styled.button`
+  width: 100%;
+  margin-top: ${theme.spacing.md};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid ${theme.colors.border};
+  background: ${theme.colors.surface};
+  color: ${theme.colors.accent};
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    background: ${theme.colors.muted};
   }
 `;
 
 const IssueTitle = styled.h3`
   color: ${theme.colors.heading};
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.45;
 `;
 
@@ -186,9 +250,17 @@ const ImageGrid = styled.div`
   gap: ${theme.spacing.sm};
 
   img {
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
+    max-height: 14rem;
+    object-fit: contain;
+    background: ${theme.colors.background};
   }
+`;
+
+const SummaryImage = styled.img`
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: initial;
 `;
 
 const CodeHeader = styled.div`
@@ -324,6 +396,19 @@ function parseMarkdown(markdown: string): MarkdownBlock[] {
       continue;
     }
 
+    if (trimmed.includes('|') && index + 1 < lines.length && isTableDividerLine(lines[index + 1])) {
+      const tableLines: string[] = [trimmed];
+      index += 1;
+
+      while (index < lines.length && lines[index].trim().includes('|')) {
+        tableLines.push(lines[index].trim());
+        index += 1;
+      }
+
+      blocks.push(parseTableBlock(tableLines));
+      continue;
+    }
+
     const paragraphLines: string[] = [];
 
     while (
@@ -398,6 +483,29 @@ function renderBlock(block: MarkdownBlock, index: number) {
           ))}
         </ol>
       );
+    case 'table':
+      return (
+        <table key={key}>
+          <thead>
+            <tr>
+              {block.header.map((cell, cellIndex) => (
+                <th key={`${key}-head-${cellIndex}`}>{renderInline(cell, `${key}-head-${cellIndex}`)}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {block.rows.map((row, rowIndex) => (
+              <tr key={`${key}-row-${rowIndex}`}>
+                {row.map((cell, cellIndex) => (
+                  <td key={`${key}-row-${rowIndex}-${cellIndex}`}>
+                    {renderInline(cell, `${key}-row-${rowIndex}-${cellIndex}`)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
     case 'code':
       return (
         <div key={key}>
@@ -427,6 +535,14 @@ function renderBlockSequence(blocks: MarkdownBlock[], keyPrefix: string) {
       while (index < blocks.length && blocks[index].type === 'image') {
         images.push(blocks[index] as Extract<MarkdownBlock, { type: 'image' }>);
         index += 1;
+      }
+
+      const hasArchitectureImage = images.some((image) => /architecture|아키텍처|개념도/i.test(image.alt));
+
+      if (images.length === 1 && hasArchitectureImage) {
+        const image = images[0];
+        nodes.push(<SummaryImage key={`${keyPrefix}-summary-image-${index}`} src={image.src} alt={image.alt} />);
+        continue;
       }
 
       nodes.push(
@@ -484,7 +600,9 @@ function renderBlocks(blocks: MarkdownBlock[]) {
             {cards.map((card, cardIndex) => (
               <IssueCard key={`issue-card-${index}-${cardIndex}`}>
                 <IssueTitle>{renderInline(card.title, `issue-title-${index}-${cardIndex}`)}</IssueTitle>
-                {renderBlockSequence(card.blocks, `issue-card-${index}-${cardIndex}`)}
+                <ExpandableIssueBody key={`issue-card-body-${index}-${cardIndex}`}>
+                  {renderBlockSequence(card.blocks, `issue-card-${index}-${cardIndex}`)}
+                </ExpandableIssueBody>
               </IssueCard>
             ))}
           </IssueGrid>,
@@ -626,6 +744,80 @@ function renderInline(content: string, keyPrefix: string): ReactNode[] {
   }
 
   return nodes;
+}
+
+function ExpandableIssueBody({ children }: { children: ReactNode }) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  const [collapsible, setCollapsible] = useState(false);
+
+  useEffect(() => {
+    const element = contentRef.current;
+
+    if (!element) {
+      return;
+    }
+
+    const updateState = () => {
+      const overflowed = element.scrollHeight > 420;
+      setCollapsible(overflowed);
+
+      if (!overflowed) {
+        setExpanded(true);
+      }
+    };
+
+    updateState();
+
+    const observer = new ResizeObserver(updateState);
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div>
+      <IssueCardBody $expanded={expanded} $collapsible={collapsible}>
+        <div ref={contentRef}>{children}</div>
+        <IssueCardFade $visible={!expanded && collapsible} />
+      </IssueCardBody>
+      {collapsible ? (
+        <IssueExpandButton
+          type="button"
+          aria-expanded={expanded}
+          aria-label={expanded ? '접기' : '펼치기'}
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? '−' : '+'}
+        </IssueExpandButton>
+      ) : null}
+    </div>
+  );
+}
+
+function isTableDividerLine(line: string) {
+  return /^\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?\s*$/.test(line.trim());
+}
+
+function parseTableBlock(lines: string[]): Extract<MarkdownBlock, { type: 'table' }> {
+  const rows = lines
+    .map((line) =>
+      line
+        .trim()
+        .replace(/^\|/, '')
+        .replace(/\|$/, '')
+        .split('|')
+        .map((cell) => cell.trim()),
+    )
+    .filter((row) => row.some((cell) => cell.length > 0));
+
+  const [header = [], ...bodyRows] = rows;
+
+  return {
+    type: 'table',
+    header,
+    rows: bodyRows,
+  };
 }
 
 function findNextToken(content: string) {

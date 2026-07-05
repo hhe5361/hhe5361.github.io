@@ -25,8 +25,12 @@ interface AboutContent {
 
 const skillGroups = [
   {
-    label: 'Language & Backend',
-    items: ['Java / Spring', 'Go / Gin', 'C++', 'C#'],
+    label: 'Language',
+    items: ['Python', 'Java', 'Go', 'C++', 'C#'],
+  },
+  {
+    label: 'Framework',
+    items: ['.NET', 'Gin', 'Spring'],
   },
   {
     label: 'DevOps',
@@ -60,7 +64,7 @@ const experienceItems = [
   },
   {
     icon: '🔬',
-    label: 'ICNS 연구실 인턴',
+    label: 'ICNS 연구실 학부연구생',
     period: '2024.10 - 2026.08',
   },
   {
@@ -80,7 +84,7 @@ const PageShell = styled.div`
 
   @media (min-width: ${theme.breakpoints.lg}) {
     display: grid;
-    grid-template-columns: minmax(220px, 2.5fr) minmax(0, 7.5fr);
+    grid-template-columns: minmax(180px, 2fr) minmax(0, 8fr);
     gap: clamp(1.5rem, 3vw, 3rem);
     align-items: start;
   }
@@ -112,15 +116,16 @@ const ProfileImage = styled.img`
 
 const Name = styled.h1`
   color: ${theme.colors.heading};
-  font-size: clamp(1.7rem, 3vw, 2.25rem);
+  font-size: clamp(1.4rem, 2.4vw, 1.8rem);
   line-height: 1.08;
   margin-bottom: ${theme.spacing.xs};
 `;
 
 const Role = styled.p`
   color: ${theme.colors.accent};
+  font-size: 0.9rem;
   font-weight: 700;
-  margin-bottom: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.md};
 `;
 
 const SidebarSection = styled.section`
@@ -130,9 +135,9 @@ const SidebarSection = styled.section`
 
   h2 {
     color: ${theme.colors.heading};
-    font-size: 0.82rem;
+    font-size: 0.75rem;
     letter-spacing: 0.12em;
-    margin-bottom: ${theme.spacing.md};
+    margin-bottom: ${theme.spacing.sm};
     text-transform: uppercase;
   }
 `;
@@ -145,8 +150,8 @@ const SkillGroup = styled.div`
 
 const SkillGroupTitle = styled.h3`
   color: ${theme.colors.heading};
-  font-size: 0.95rem;
-  margin-bottom: ${theme.spacing.sm};
+  font-size: 0.85rem;
+  margin-bottom: ${theme.spacing.xs};
 `;
 
 const ResumeList = styled.div`
@@ -159,7 +164,7 @@ const ResumeItem = styled.div`
   grid-template-columns: 1.35rem minmax(0, 1fr);
   gap: ${theme.spacing.xs};
   color: ${theme.colors.textMuted};
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   line-height: 1.45;
 `;
 
@@ -175,7 +180,7 @@ const ResumeText = styled.span`
 
 const ResumePeriod = styled.span`
   color: ${theme.colors.textMuted};
-  font-size: 0.78rem;
+  font-size: 0.72rem;
 `;
 
 const SkillList = styled.ul`
@@ -189,9 +194,9 @@ const SkillPill = styled.li`
   border: 1px solid ${theme.colors.border};
   border-radius: 999px;
   color: ${theme.colors.text};
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   line-height: 1;
-  padding: 0.45rem 0.65rem;
+  padding: 0.35rem 0.55rem;
   background: ${theme.colors.muted};
 `;
 
@@ -204,12 +209,13 @@ const ContactLink = styled.a`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
-  min-height: 2.75rem;
+  min-height: 2.4rem;
   border: 1px solid ${theme.colors.border};
   border-radius: 8px;
   color: ${theme.colors.heading};
+  font-size: 0.82rem;
   font-weight: 700;
-  padding: 0 ${theme.spacing.md};
+  padding: 0 ${theme.spacing.sm};
   background: ${theme.colors.background};
   transition:
     border-color ${theme.transitions.default},
@@ -246,16 +252,16 @@ const IntroSection = styled.section`
 
 const Eyebrow = styled.p`
   color: ${theme.colors.accent};
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
-  margin-bottom: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.sm};
   text-transform: uppercase;
 `;
 
 const IntroTitle = styled.h2`
   color: ${theme.colors.heading};
-  font-size: clamp(1.75rem, 3.4vw, 3rem);
+  font-size: clamp(1.6rem, 3vw, 2.65rem);
   line-height: 1.12;
   max-width: 820px;
   margin-bottom: ${theme.spacing.lg};
@@ -266,7 +272,7 @@ const IntroText = styled.div`
   gap: ${theme.spacing.md};
   max-width: 780px;
   color: ${theme.colors.text};
-  font-size: clamp(1rem, 1.8vw, 1.16rem);
+  font-size: clamp(0.95rem, 1.55vw, 1.05rem);
   line-height: 1.8;
 `;
 
@@ -289,18 +295,18 @@ const Highlight = styled.div`
     align-items: center;
     gap: ${theme.spacing.sm};
     color: ${theme.colors.heading};
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     margin-bottom: ${theme.spacing.xs};
   }
 
   span {
     color: ${theme.colors.textMuted};
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 `;
 
 const HighlightIcon = styled.span`
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   line-height: 1;
 `;
 
@@ -324,7 +330,7 @@ const SectionHeader = styled.div`
 
 const SectionTitle = styled.h2`
   color: ${theme.colors.heading};
-  font-size: clamp(1.75rem, 4vw, 2.45rem);
+  font-size: clamp(1.55rem, 3.5vw, 2.15rem);
 `;
 
 const ProjectGrid = styled.div`
@@ -383,7 +389,7 @@ const ProjectBody = styled.div`
 
 const ProjectTitle = styled.h3`
   color: ${theme.colors.heading};
-  font-size: clamp(1.25rem, 3vw, 1.55rem);
+  font-size: clamp(1.12rem, 2.5vw, 1.38rem);
   margin-bottom: ${theme.spacing.sm};
 `;
 
@@ -395,6 +401,7 @@ const ProjectInfo = styled.div`
 
 const ProjectInfoRow = styled.p`
   color: ${theme.colors.text};
+  font-size: 0.95rem;
   line-height: 1.75;
 `;
 

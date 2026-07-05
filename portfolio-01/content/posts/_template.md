@@ -23,19 +23,19 @@ Write the first paragraph as a compact project summary if you want the card exce
 
 **Team Size** : N명
 
-**Tech Stack** : Java / Spring, Go / Gin, AWS, Docker
+**Tech Stack** : Python, Java, Go, C++, C#, .NET, Gin, Spring, AWS, Docker
 
 **Description** : 구현 구조, 핵심 기능, 결과를 간단히 적습니다.
 
 ## My Role
-
----
 
 - 담당한 기능 또는 모듈
 - 주요 의사결정
 - 협업 범위
 
 ## Troubleshooting
+
+---
 
 ### Issue 1. 이슈 제목
 

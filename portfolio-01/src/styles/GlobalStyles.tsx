@@ -12,7 +12,7 @@ const globalStyles = css`
 
   html {
     scroll-behavior: smooth;
-    font-size: 16px;
+    font-size: 15px;
     overflow-x: hidden;
     width: 100%;
   }
@@ -83,7 +83,7 @@ const globalStyles = css`
 
   @media (max-width: ${theme.breakpoints.sm}) {
     html {
-      font-size: 14px;
+      font-size: 13.5px;
     }
   }
 
