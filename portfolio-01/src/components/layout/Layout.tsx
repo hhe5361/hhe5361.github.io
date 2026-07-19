@@ -15,6 +15,7 @@ interface LayoutProps {
 const defaultNavigationLinks: NavigationLink[] = [
   { href: '#about', label: '소개', ariaLabel: '소개로 이동' },
   { href: '#experience', label: 'My Works', ariaLabel: 'My Works로 이동' },
+  { href: '#toy-projects', label: 'Toy Proj', ariaLabel: 'Toy Projects로 이동' },
   { href: '#contact', label: '연락처', ariaLabel: '연락처로 이동' },
 ];
 

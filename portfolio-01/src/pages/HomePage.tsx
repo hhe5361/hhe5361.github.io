@@ -7,8 +7,9 @@ import {
 } from 'react-icons/fa';
 import aboutMarkdown from '/content/about.md?raw';
 import profilePhoto from '../assets/profile-photo-updated.jpeg';
-import { featuredPosts } from '../features/posts/content';
+import { toyPosts, workPosts } from '../features/posts/content';
 import { buildPostHref } from '../features/posts/routes';
+import type { Post } from '../features/posts/types';
 import { theme } from '../styles/theme';
 
 interface AboutContent {
@@ -321,6 +322,11 @@ const ActivitiesSection = styled.section`
   margin-top: clamp(1.75rem, 3vw, 2.75rem);
   padding-top: clamp(1.75rem, 3vw, 2.75rem);
   border-top: 1px solid ${theme.colors.border};
+`;
+
+const ToyProjectsSection = styled(ExperienceSection)`
+  scroll-margin-top: 6rem;
+  margin-top: clamp(1.75rem, 3vw, 2.75rem);
 `;
 
 const SectionHeader = styled.div`
@@ -645,59 +651,20 @@ export const HomePage = () => {
         </IntroSection>
 
         <ExperienceSection id="experience" aria-label="My Works">
-          <SectionHeader>
-            <Eyebrow>Selected Projects</Eyebrow>
-            <SectionTitle>My Works</SectionTitle>
-          </SectionHeader>
-
-          {featuredPosts.length === 0 ? (
-            <EmptyState>등록된 프로젝트가 없습니다.</EmptyState>
-          ) : (
-            <CareerList>
-              {featuredPosts.map((project) => (
-                <CareerItem key={project.slug}>
-                  <CareerMeta>
-                    <CareerPeriod>{project.period || project.formattedDate}</CareerPeriod>
-                    {project.affiliation ? <p>{project.affiliation}</p> : null}
-                    {project.teamSize ? <p>{project.teamSize}</p> : null}
-                  </CareerMeta>
-                  <CareerBody>
-                    <CareerContent>
-                      {project.coverImage ? (
-                        <CareerThumbnail
-                          src={project.coverImage}
-                          alt={`${project.title} 화면`}
-                          loading="lazy"
-                        />
-                      ) : null}
-                      <CareerDetails>
-                        <CareerTitle>{project.title}</CareerTitle>
-                        <CareerSummary>{project.summary}</CareerSummary>
-                        {project.highlights.length > 0 ? (
-                          <HighlightList>
-                            {project.highlights.map((highlight) => (
-                              <li key={highlight}>{highlight}</li>
-                            ))}
-                          </HighlightList>
-                        ) : null}
-                        {project.techStack.length > 0 ? (
-                          <TechList>{project.techStack.join(' · ')}</TechList>
-                        ) : null}
-                      </CareerDetails>
-                      <WorksLink
-                        href={buildPostHref(project.slug)}
-                        aria-label={`${project.title} 상세 페이지로 이동`}
-                      >
-                        <span>Detail</span>
-                        <FaArrowRight aria-hidden="true" />
-                      </WorksLink>
-                    </CareerContent>
-                  </CareerBody>
-                </CareerItem>
-              ))}
-            </CareerList>
-          )}
+          <ProjectCollection
+            eyebrow="Selected Projects"
+            title="My Works"
+            projects={workPosts}
+          />
         </ExperienceSection>
+
+        <ToyProjectsSection id="toy-projects" aria-label="Toy Projects">
+          <ProjectCollection
+            eyebrow="Side Projects"
+            title="Toy Proj"
+            projects={toyPosts}
+          />
+        </ToyProjectsSection>
 
         <ActivitiesSection id="activities" aria-label="활동 및 수상 경력">
           <SectionHeader>
@@ -746,6 +713,71 @@ export const HomePage = () => {
     </PageShell>
   );
 };
+
+interface ProjectCollectionProps {
+  eyebrow: string;
+  title: string;
+  projects: Post[];
+}
+
+function ProjectCollection({ eyebrow, title, projects }: ProjectCollectionProps) {
+  return (
+    <>
+      <SectionHeader>
+        <Eyebrow>{eyebrow}</Eyebrow>
+        <SectionTitle>{title}</SectionTitle>
+      </SectionHeader>
+
+      {projects.length === 0 ? (
+        <EmptyState>등록된 프로젝트가 없습니다.</EmptyState>
+      ) : (
+        <CareerList>
+          {projects.map((project) => (
+            <CareerItem key={project.slug}>
+              <CareerMeta>
+                <CareerPeriod>{project.period || project.formattedDate}</CareerPeriod>
+                {project.affiliation ? <p>{project.affiliation}</p> : null}
+                {project.teamSize ? <p>{project.teamSize}</p> : null}
+              </CareerMeta>
+              <CareerBody>
+                <CareerContent>
+                  {project.coverImage ? (
+                    <CareerThumbnail
+                      src={project.coverImage}
+                      alt={`${project.title} 화면`}
+                      loading="lazy"
+                    />
+                  ) : null}
+                  <CareerDetails>
+                    <CareerTitle>{project.title}</CareerTitle>
+                    <CareerSummary>{project.summary}</CareerSummary>
+                    {project.highlights.length > 0 ? (
+                      <HighlightList>
+                        {project.highlights.map((highlight) => (
+                          <li key={highlight}>{highlight}</li>
+                        ))}
+                      </HighlightList>
+                    ) : null}
+                    {project.techStack.length > 0 ? (
+                      <TechList>{project.techStack.join(' · ')}</TechList>
+                    ) : null}
+                  </CareerDetails>
+                  <WorksLink
+                    href={buildPostHref(project.slug)}
+                    aria-label={`${project.title} 상세 페이지로 이동`}
+                  >
+                    <span>Detail</span>
+                    <FaArrowRight aria-hidden="true" />
+                  </WorksLink>
+                </CareerContent>
+              </CareerBody>
+            </CareerItem>
+          ))}
+        </CareerList>
+      )}
+    </>
+  );
+}
 
 function parseAboutMarkdown(markdown: string): AboutContent {
   const lines = markdown.replace(/\r\n/g, '\n').split('\n');

@@ -9,6 +9,7 @@ export interface Post {
   affiliation?: string;
   teamSize?: string;
   highlights: string[];
+  projectType: 'work' | 'toy';
   coverImage?: string;
   githubUrl?: string;
   liveUrl?: string;

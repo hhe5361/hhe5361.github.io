@@ -181,6 +181,68 @@ const SummaryImage = styled.img`
   object-fit: contain;
 `;
 
+const MediaGallery = styled.div<{ $pair: boolean }>`
+  display: grid;
+  gap: ${theme.spacing.md};
+  padding-bottom: ${theme.spacing.sm};
+
+  ${({ $pair }) =>
+    $pair
+      ? `
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      `
+      : `
+        grid-auto-flow: column;
+        grid-auto-columns: 58%;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scroll-snap-type: inline mandatory;
+      `}
+
+  figure {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  img {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    max-height: none;
+    aspect-ratio: 16 / 10;
+    object-fit: contain;
+  }
+
+  figcaption {
+    color: ${theme.colors.textMuted};
+    font-size: 0.72rem;
+    line-height: 1.5;
+    margin-top: ${theme.spacing.xs};
+  }
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${theme.colors.muted};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.borderStrong};
+    border: 0;
+  }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 88%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+  }
+`;
+
 const CodeHeader = styled.div`
   font-size: 0.8rem;
   letter-spacing: 0.08em;
@@ -505,6 +567,32 @@ function renderBlocks(blocks: MarkdownBlock[]) {
         index = nextIndex;
         continue;
       }
+    }
+
+    if (block.type === 'image') {
+      const images: Extract<MarkdownBlock, { type: 'image' }>[] = [];
+
+      while (index < blocks.length && blocks[index].type === 'image') {
+        images.push(blocks[index] as Extract<MarkdownBlock, { type: 'image' }>);
+        index += 1;
+      }
+
+      if (images.length > 1) {
+        nodes.push(
+          <MediaGallery key={`media-gallery-${index}`} $pair={images.length === 2}>
+            {images.map((image, imageIndex) => (
+              <figure key={`media-gallery-${index}-${imageIndex}`}>
+                <img src={image.src} alt={image.alt} />
+                <figcaption>{image.alt}</figcaption>
+              </figure>
+            ))}
+          </MediaGallery>,
+        );
+      } else {
+        nodes.push(renderBlock(images[0], index - 1));
+      }
+
+      continue;
     }
 
     nodes.push(renderBlock(block, index));

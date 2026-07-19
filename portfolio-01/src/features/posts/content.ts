@@ -16,6 +16,8 @@ const posts = Object.entries(rawPostFiles)
 
 export const allPosts = posts;
 export const featuredPosts = posts.filter((post) => post.featured);
+export const workPosts = featuredPosts.filter((post) => post.projectType === 'work');
+export const toyPosts = featuredPosts.filter((post) => post.projectType === 'toy');
 
 export const getPostBySlug = (slug: string) =>
   posts.find((post) => post.slug === slug) ?? null;
@@ -38,6 +40,7 @@ function createPost(path: string, source: string): Post {
     affiliation: readOptionalString(frontmatter.affiliation),
     teamSize: readOptionalString(frontmatter.teamSize),
     highlights: readStringList(frontmatter.highlights),
+    projectType: readProjectType(frontmatter.projectType),
     coverImage: readOptionalString(frontmatter.coverImage),
     githubUrl: readOptionalString(frontmatter.githubUrl),
     liveUrl: readOptionalString(frontmatter.liveUrl),
@@ -256,6 +259,10 @@ function readStringList(value: FrontmatterValue | undefined) {
 
 function readBoolean(value: FrontmatterValue | undefined) {
   return value === true;
+}
+
+function readProjectType(value: FrontmatterValue | undefined): Post['projectType'] {
+  return readString(value).toLowerCase() === 'toy' ? 'toy' : 'work';
 }
 
 function slugify(value: string) {

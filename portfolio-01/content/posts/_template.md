@@ -3,6 +3,7 @@ title: "Project Title"
 slug: "project-title"
 date: "2026-05-12"
 featured: true
+projectType: "work"
 period: "YYYY.MM - YYYY.MM"
 affiliation: "소속"
 teamSize: "N인 프로젝트"

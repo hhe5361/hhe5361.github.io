@@ -39,6 +39,7 @@ highlights:
 ![웹 기반 시스템 아키텍처](/portfolio/web-semiconductor-management/system-architecture.png)
 
 ## My Role
+---
 
 - API 서버 유지보수
 - 멀티 스트리밍 안정화 작업
@@ -47,8 +48,9 @@ highlights:
 - 현장 운영 중 발생하는 스트리밍 이슈 대응
 
 ## Troubleshooting
+---
 
-### Issue 1. 최대 30채널 멀티뷰 스트리밍 병목
+## Issue 1. 최대 30채널 멀티뷰 스트리밍 병목
 
 #### Situation
 
@@ -82,7 +84,9 @@ HLS 기반 구조의 한계를 분석한 후 두 가지 방안을 검토했습�
 - 영상 끊김 현상 완화
 - HTTP 요청은 최초 1회만 발생
 
-### Issue 2. 스트리밍 상태 추적 및 복구 로직 부재
+---
+
+## Issue 2. 스트리밍 상태 추적 및 복구 로직 부재
 
 #### Situation
 

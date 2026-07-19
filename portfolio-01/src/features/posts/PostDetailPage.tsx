@@ -151,14 +151,17 @@ export const PostDetailPage = ({ post, requestedSlug }: PostDetailPageProps) => 
     );
   }
 
+  const returnSection = post.projectType === 'toy' ? 'toy-projects' : 'experience';
+  const returnLabel = post.projectType === 'toy' ? 'Toy Proj로 돌아가기' : 'My Works로 돌아가기';
+
   return (
     <PageSection aria-label={post.title}>
       <DetailContainer>
         <ArticleShell>
           <HeroPanel>
-            <BackLink href={buildHomeHref('experience')}>
+            <BackLink href={buildHomeHref(returnSection)}>
               <FaArrowLeft aria-hidden="true" />
-              My Works로 돌아가기
+              {returnLabel}
             </BackLink>
             <HeroTitle>{post.title}</HeroTitle>
             <HeroSummary>{post.summary}</HeroSummary>
