@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { type ReactNode } from 'react';
 import { theme } from '../../styles/theme';
 
 type MarkdownBlock =
@@ -34,7 +34,13 @@ const Content = styled.div`
     margin-top: ${theme.spacing.md};
   }
 
-  h4,
+  h4 {
+    color: ${theme.colors.accent};
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: ${theme.spacing.sm};
+  }
+
   h5,
   h6 {
     color: ${theme.colors.heading};
@@ -121,9 +127,14 @@ const Content = styled.div`
   }
 
   img {
-    width: 100%;
+    width: auto;
+    max-width: min(100%, 720px);
+    max-height: 30rem;
+    justify-self: center;
+    object-fit: contain;
     border-radius: 8px;
     border: 1px solid ${theme.colors.border};
+    background: ${theme.colors.background};
   }
 
   .inline-code {
@@ -131,16 +142,6 @@ const Content = styled.div`
     color: ${theme.colors.heading};
     border-radius: 4px;
     padding: 0.15rem 0.4rem;
-  }
-`;
-
-const IssueGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: ${theme.spacing.md};
-
-  @media (min-width: ${theme.breakpoints.md}) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 `;
 
@@ -158,98 +159,13 @@ const SummaryPanel = styled.div`
   }
 `;
 
-const IssueCard = styled.article`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.md};
-  min-height: 100%;
-  padding: ${theme.spacing.lg};
-  border: 1px solid ${theme.colors.border};
-  border-radius: 8px;
-  background: ${theme.colors.surface};
-  box-shadow: 0 12px 28px rgba(17, 24, 39, 0.06);
-
-  ul,
-  ol {
-    padding-left: 1.25rem;
-    border: 0;
-    background: transparent;
-    display: block;
-  }
-
-  h4 {
-    margin: ${theme.spacing.sm} 0 ${theme.spacing.sm};
-    padding-bottom: ${theme.spacing.xs};
-    border-bottom: 1px solid ${theme.colors.border};
-    color: ${theme.colors.accent};
-    font-size: 1rem;
-  }
-
-  li {
-    margin: 0 0 ${theme.spacing.sm};
-    padding: 0;
-    border: 0;
-  }
-
-  img {
-    max-height: 22rem;
-    object-fit: contain;
-    background: ${theme.colors.background};
-  }
-`;
-
-const IssueCardBody = styled.div<{ $expanded: boolean; $collapsible: boolean }>`
-  position: relative;
-  display: grid;
-  gap: ${theme.spacing.md};
-  overflow: hidden;
-  max-height: ${({ $expanded, $collapsible }) => ($expanded || !$collapsible ? 'none' : '34rem')};
-`;
-
-const IssueCardFade = styled.div<{ $visible: boolean }>`
-  display: ${({ $visible }) => ($visible ? 'block' : 'none')};
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 4.5rem;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), ${theme.colors.surface});
-  pointer-events: none;
-`;
-
-const IssueExpandButton = styled.button`
-  width: 100%;
-  margin-top: ${theme.spacing.md};
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.25rem;
-  border-radius: 999px;
-  border: 1px solid ${theme.colors.border};
-  background: ${theme.colors.surface};
-  color: ${theme.colors.accent};
-  font-size: 1.15rem;
-  font-weight: 700;
-  line-height: 1;
-  cursor: pointer;
-
-  &:hover {
-    background: ${theme.colors.muted};
-  }
-`;
-
-const IssueTitle = styled.h3`
-  color: ${theme.colors.heading};
-  font-size: 0.95rem;
-  line-height: 1.45;
-`;
-
 const ImageGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
   gap: ${theme.spacing.sm};
 
   img {
+    width: 100%;
     max-height: 14rem;
     object-fit: contain;
     background: ${theme.colors.background};
@@ -257,10 +173,12 @@ const ImageGrid = styled.div`
 `;
 
 const SummaryImage = styled.img`
-  width: 100%;
+  width: auto;
+  max-width: min(100%, 760px);
   height: auto;
-  max-height: none;
-  object-fit: initial;
+  max-height: 32rem;
+  justify-self: center;
+  object-fit: contain;
 `;
 
 const CodeHeader = styled.div`
@@ -589,29 +507,6 @@ function renderBlocks(blocks: MarkdownBlock[]) {
       }
     }
 
-    if (isIssueSectionHeading(block)) {
-      nodes.push(renderBlock(block, index));
-
-      const { cards, nextIndex } = collectIssueCards(blocks, index + 1);
-
-      if (cards.length > 0) {
-        nodes.push(
-          <IssueGrid key={`issue-grid-${index}`}>
-            {cards.map((card, cardIndex) => (
-              <IssueCard key={`issue-card-${index}-${cardIndex}`}>
-                <IssueTitle>{renderInline(card.title, `issue-title-${index}-${cardIndex}`)}</IssueTitle>
-                <ExpandableIssueBody key={`issue-card-body-${index}-${cardIndex}`}>
-                  {renderBlockSequence(card.blocks, `issue-card-${index}-${cardIndex}`)}
-                </ExpandableIssueBody>
-              </IssueCard>
-            ))}
-          </IssueGrid>,
-        );
-        index = nextIndex;
-        continue;
-      }
-    }
-
     nodes.push(renderBlock(block, index));
     index += 1;
   }
@@ -624,14 +519,6 @@ function isSummarySectionHeading(block: MarkdownBlock) {
     block.type === 'heading' &&
     block.level === 2 &&
     /project\s+summary|프로젝트\s*개요/i.test(block.content)
-  );
-}
-
-function isIssueSectionHeading(block: MarkdownBlock) {
-  return (
-    block.type === 'heading' &&
-    block.level === 2 &&
-    /troubleshooting|주요\s*이슈|issues?/i.test(block.content)
   );
 }
 
@@ -651,45 +538,6 @@ function collectSectionBlocks(blocks: MarkdownBlock[], startIndex: number) {
   }
 
   return { sectionBlocks, nextIndex: index };
-}
-
-function collectIssueCards(blocks: MarkdownBlock[], startIndex: number) {
-  const cards: Array<{ title: string; blocks: MarkdownBlock[] }> = [];
-  let index = startIndex;
-
-  while (index < blocks.length) {
-    const block = blocks[index];
-
-    if (block.type === 'heading' && block.level === 2) {
-      break;
-    }
-
-    if (block.type !== 'heading' || block.level !== 3) {
-      index += 1;
-      continue;
-    }
-
-    const title = block.content;
-    const cardBlocks: MarkdownBlock[] = [];
-    index += 1;
-
-    while (index < blocks.length) {
-      const nextBlock = blocks[index];
-      const isNextSection = nextBlock.type === 'heading' && nextBlock.level === 2;
-      const isNextIssue = nextBlock.type === 'heading' && nextBlock.level === 3;
-
-      if (isNextSection || isNextIssue) {
-        break;
-      }
-
-      cardBlocks.push(nextBlock);
-      index += 1;
-    }
-
-    cards.push({ title, blocks: cardBlocks });
-  }
-
-  return { cards, nextIndex: index };
 }
 
 function renderInline(content: string, keyPrefix: string): ReactNode[] {
@@ -744,55 +592,6 @@ function renderInline(content: string, keyPrefix: string): ReactNode[] {
   }
 
   return nodes;
-}
-
-function ExpandableIssueBody({ children }: { children: ReactNode }) {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [expanded, setExpanded] = useState(false);
-  const [collapsible, setCollapsible] = useState(false);
-
-  useEffect(() => {
-    const element = contentRef.current;
-
-    if (!element) {
-      return;
-    }
-
-    const updateState = () => {
-      const overflowed = element.scrollHeight > 420;
-      setCollapsible(overflowed);
-
-      if (!overflowed) {
-        setExpanded(true);
-      }
-    };
-
-    updateState();
-
-    const observer = new ResizeObserver(updateState);
-    observer.observe(element);
-
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div>
-      <IssueCardBody $expanded={expanded} $collapsible={collapsible}>
-        <div ref={contentRef}>{children}</div>
-        <IssueCardFade $visible={!expanded && collapsible} />
-      </IssueCardBody>
-      {collapsible ? (
-        <IssueExpandButton
-          type="button"
-          aria-expanded={expanded}
-          aria-label={expanded ? '접기' : '펼치기'}
-          onClick={() => setExpanded((current) => !current)}
-        >
-          {expanded ? '−' : '+'}
-        </IssueExpandButton>
-      ) : null}
-    </div>
-  );
 }
 
 function isTableDividerLine(line: string) {

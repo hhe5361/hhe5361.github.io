@@ -141,9 +141,9 @@ export const PostDetailPage = ({ post, requestedSlug }: PostDetailPageProps) => 
             <p>
               No post matched <code>{requestedSlug}</code>. Check the markdown filename or slug frontmatter.
             </p>
-            <ActionLink href={buildHomeHref('portfolio')}>
+            <ActionLink href={buildHomeHref('experience')}>
               <FaArrowLeft aria-hidden="true" />
-              Back to Portfolio
+              My Works로 돌아가기
             </ActionLink>
           </NotFoundPanel>
         </div>
@@ -156,19 +156,20 @@ export const PostDetailPage = ({ post, requestedSlug }: PostDetailPageProps) => 
       <DetailContainer>
         <ArticleShell>
           <HeroPanel>
-            <BackLink href={buildHomeHref('portfolio')}>
+            <BackLink href={buildHomeHref('experience')}>
               <FaArrowLeft aria-hidden="true" />
-              Back to Portfolio
+              My Works로 돌아가기
             </BackLink>
             <HeroTitle>{post.title}</HeroTitle>
             <HeroSummary>{post.summary}</HeroSummary>
             <MetaRow>
-              {post.formattedDate ? (
+              {post.period || post.formattedDate ? (
                 <MetaItem>
-                  <span aria-hidden="true">📅</span>
-                  <span>{post.formattedDate}</span>
+                  <span>{post.period || post.formattedDate}</span>
                 </MetaItem>
               ) : null}
+              {post.affiliation ? <MetaItem>{post.affiliation}</MetaItem> : null}
+              {post.teamSize ? <MetaItem>{post.teamSize}</MetaItem> : null}
             </MetaRow>
             {post.techStack.length > 0 ? (
               <TagList aria-label="Technology stack">

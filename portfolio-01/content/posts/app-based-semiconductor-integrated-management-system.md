@@ -3,6 +3,8 @@ title: "앱 기반 반도체 장비 통합 관리 시스템"
 slug: "app-based-semiconductor-integrated-management-system"
 date: "2026-07-05"
 featured: true
+period: "2025.09 - 2026.08"
+affiliation: "ICNS Lab"
 coverImage: "/portfolio/semiconductor-management/IMS.png"
 techStack:
   - C#
@@ -12,7 +14,12 @@ techStack:
   - HLS
   - RTSP
   - VNC
-summary: "윈도우 앱 기반 장비 모니터링 및 녹화 조회 서비스의 유지보수 프로젝트입니다."
+summary: "윈도우 앱 기반 장비 실시간 모니터링 및 제어, 녹화 조회 서비스의 유지보수 프로젝트입니다."
+highlights:
+  - "기존 다운로드 기반 스트리밍 재생 방식에서 HLS 기반 조회 구조로 전환해 녹화 파일 조회를 위한 전송 트래픽 90% 이상 절감"
+  - "LibVLC 라이브러리 기반 다수 스트리밍  재생 시 실유저 환경(4Core, 8 RAM, only CPU)에서 하드웨어 병목 현상 발생 -> FFmpeg 디코딩 파이프라인을 직접 구성해 60채널 재생 시 CPU 약 43%, 메모리 500~700MB 수준으로 최적화"
+  - "기존 RFB 프로토콜을 통한  여러 화면 raw pixel 스트리밍 방식  -> 저해상도 RTSP 기반 스트리밍 방식으로 변경"
+  - "실제 현장에서의 버그 추적 및 추가 기능 관련 유지보수 진행"
 ---
 
 실제 반도체 공정에서 사용하는 장비들을 원격으로 실시간 제어 및 모니터링하기 위한 윈도우 앱 기반 솔루션 유지보수 프로젝트에 참여하였습니다.
@@ -28,11 +35,18 @@ summary: "윈도우 앱 기반 장비 모니터링 및 녹화 조회 서비스�
 **Tech Stack** : C#, .NET, Windows Desktop App, FFmpeg, HLS, RTSP, VNC
 
 **Description** :
-장비 단독 스트리밍, 원격 제어, 최대 60대 멀티뷰 모니터링, 녹화 조회, 사용자 간 실시간 채팅을 제공하는 유지보수 프로젝트였습니다.
+모니터링 대상 장비의 단독 스트리밍, 원격 제어, 최대 60대 멀티뷰 모니터링, 녹화 조회, 사용자 간 실시간 채팅을 제공하는 프로젝트입니다.
 
-실제 사용자 환경이 Windows 10, 4 core CPU / 8GB RAM 수준의 제약이 큰 VDI 환경이었기 때문에, 서비스 전반에서 성능 최적화가 주요 안건이었습니다.
+해당 프로젝트는 C#/.NET 기반의 윈도우 데스크탑 앱으로 개발되었으며 크게 녹화 파일 서버, 장비 스트리밍을 위한 중간 모듈 서버, 장비 관리 및 사용자 관리 담당의 마스터 서버, 클라이언트 앱으로 구성되어 있습니다. 
+
+해당 프로젝트의 경우 실제 사용자 환경이 Windows 10, 4 core CPU / 8GB RAM 수준의 제약이 큰 VDI 환경이었기 때문에, 서비스 전반에서 성능 최적화가 주요 안건이었습니다.
 
 ![IMS 시스템 개념도](/portfolio/semiconductor-management/IMS.png)
+
+- 마스터 파일 서버 : 회원 관리 및 장비 관리 등 전반적인 CRUD API 지원
+- 녹화 파일 서버 : 장비 및 CCTV 화면의 녹화 화면 업로드 및 스트리밍 지원
+- 모듈 서버(미디어 서버) : 장비 및 CCTV 트랜스 코딩 , 녹화, RTSP 송출 지원
+- 클라이언트 앱 : 장비 실시간 모니터링 및 제어, 녹화 조회 등   
 
 ## My Role
 

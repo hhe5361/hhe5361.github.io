@@ -10,9 +10,9 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import { theme } from './styles/theme';
 
 const detailNavigationLinks: NavigationLink[] = [
-  { href: buildHomeHref('about'), label: 'Home', ariaLabel: 'Return to portfolio home' },
-  { href: buildHomeHref('portfolio'), label: 'Portfolio', ariaLabel: 'Go to portfolio projects' },
-  { href: buildHomeHref('contact'), label: 'Contact', ariaLabel: 'Go to contact section' },
+  { href: buildHomeHref('about'), label: '소개', ariaLabel: '소개로 이동' },
+  { href: buildHomeHref('experience'), label: 'My Works', ariaLabel: 'My Works로 이동' },
+  { href: buildHomeHref('contact'), label: '연락처', ariaLabel: '연락처로 이동' },
 ];
 
 function App() {

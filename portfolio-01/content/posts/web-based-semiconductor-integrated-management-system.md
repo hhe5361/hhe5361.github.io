@@ -1,8 +1,9 @@
 ---
 title: "웹 기반 반도체 장비 통합 관리 시스템"
 slug: "web-based-semiconductor-integrated-management-system"
-date: "2025-12-15"
 featured: true
+period: "2025.04 - 2026.08"
+affiliation: "ICNS Lab"
 coverImage: "/portfolio/web-semiconductor-management/system-architecture.png"
 techStack:
   - Java
@@ -12,6 +13,10 @@ techStack:
   - HLS
   - Web
 summary: "웹 기반 반도체 장비 모니터링 서비스의 스트리밍 구조와 장애 대응 로직을 개선한 유지보수 프로젝트입니다."
+highlights:
+  - "HLS 기반 다수 화면 스트리밍 ->  WebRTC 구조로 변경,  최대 30채널 스트리밍 안정화"
+  - "잦은 네트워크 환경 변화로 인한 장애 ->  API 서버와 VNC 컴포넌트의 상태 추적 및 자동 복구 흐름 재설계, 시스템 안정화 기여"
+  - "현장 적용 후 각종 추가 기능 및 이슈 대응 기여"
 ---
 
 웹 브라우저에서 반도체 장비를 원격으로 모니터링하고 제어하는 서비스의 유지보수 프로젝트에 참여했습니다.
@@ -20,7 +25,7 @@ summary: "웹 기반 반도체 장비 모니터링 서비스의 스트리밍 구
 
 ## Project Summary
 
-**Period** : 2025.04 - 2025.12
+**Period** : 2025.04 - 2026.08
 
 **Team Size** : 2명
 

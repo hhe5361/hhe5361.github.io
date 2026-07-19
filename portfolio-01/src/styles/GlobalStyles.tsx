@@ -12,7 +12,7 @@ const globalStyles = css`
 
   html {
     scroll-behavior: smooth;
-    font-size: 15px;
+    font-size: 14.5px;
     overflow-x: hidden;
     width: 100%;
   }

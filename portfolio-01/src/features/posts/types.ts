@@ -5,6 +5,10 @@ export interface Post {
   formattedDate: string;
   summary: string;
   content: string;
+  period?: string;
+  affiliation?: string;
+  teamSize?: string;
+  highlights: string[];
   coverImage?: string;
   githubUrl?: string;
   liveUrl?: string;

@@ -13,9 +13,9 @@ interface LayoutProps {
 }
 
 const defaultNavigationLinks: NavigationLink[] = [
-  { href: '#about', label: 'About', ariaLabel: 'About section' },
-  { href: '#portfolio', label: 'Portfolio', ariaLabel: 'Portfolio section' },
-  { href: '#contact', label: 'Contact', ariaLabel: 'Contact section' },
+  { href: '#about', label: '소개', ariaLabel: '소개로 이동' },
+  { href: '#experience', label: 'My Works', ariaLabel: 'My Works로 이동' },
+  { href: '#contact', label: '연락처', ariaLabel: '연락처로 이동' },
 ];
 
 const LayoutWrapper = styled.div`
@@ -86,13 +86,24 @@ const Nav = styled.nav`
     margin: 0 auto;
     width: 90%;
   }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    .container {
+      width: 96%;
+      padding: 0 ${theme.spacing.sm};
+    }
+  }
 `;
 
 const Logo = styled(motion.a)`
   color: ${theme.colors.heading};
   font-family: ${theme.fonts.heading};
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    font-size: 1rem;
+  }
 `;
 
 const NavLinks = styled.div`
@@ -103,6 +114,7 @@ const NavLinks = styled.div`
     color: ${theme.colors.text};
     transition: all ${theme.transitions.default};
     font-weight: 700;
+    font-size: 0.82rem;
     padding: ${theme.spacing.xs} ${theme.spacing.sm};
     border-radius: 4px;
 
@@ -113,7 +125,13 @@ const NavLinks = styled.div`
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
-    gap: ${theme.spacing.md};
+    gap: 0.35rem;
+
+    a {
+      padding: ${theme.spacing.xs};
+      font-size: 0.7rem;
+      white-space: nowrap;
+    }
   }
 `;
 

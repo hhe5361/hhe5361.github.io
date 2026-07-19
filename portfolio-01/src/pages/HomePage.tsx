@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { motion } from 'framer-motion';
 import {
+  FaArrowRight,
   FaEnvelope,
   FaGithub,
   FaLinkedin,
@@ -11,16 +11,9 @@ import { featuredPosts } from '../features/posts/content';
 import { buildPostHref } from '../features/posts/routes';
 import { theme } from '../styles/theme';
 
-interface AboutValue {
-  icon: string;
-  title: string;
-  description: string;
-}
-
 interface AboutContent {
   title: string;
   paragraphs: string[];
-  values: AboutValue[];
 }
 
 const skillGroups = [
@@ -56,36 +49,88 @@ const contactLinks = [
   },
 ];
 
-const experienceItems = [
+const educationItems = [
   {
-    icon: '🎓',
-    label: '경희대학교 입학',
-    period: '2022.03',
+    label: '경희대학교 컴퓨터공학과',
+    period: '2022.03 - 2026.08',
+    note: '22학번',
   },
   {
-    icon: '🔬',
-    label: 'ICNS 연구실 학부연구생',
-    period: '2024.10 - 2026.08',
+    label: 'ICNS 컨티뉴엄 클라우드 컴퓨팅 연구실',
+    period: '2024.11 - 현재',
+    note: '학부연구생',
+  },
+];
+
+const activityItems = [
+  {
+    period: '2024.11 - 현재',
+    icon: '📚',
+    category: 'Research',
+    title: 'ICNS 컨티뉴엄 클라우드 컴퓨팅 연구실',
+    description: '경희대학교 학부연구생',
   },
   {
+    period: '2024.03 - 2024.06',
+    icon: '👦',
+    category: 'Volunteer',
+    title: '찾아가는 SW 교육 기부단',
+    description: '코드클럽 주관 소프트웨어 교육 봉사',
+  },
+  {
+    period: '2023.12 - 2024.02',
+    icon: '👦',
+    category: 'Volunteer',
+    title: '소프트웨어야 놀자 겨울 캠프',
+    description: '네이버 주관 소프트웨어 교육 봉사',
+  },
+  {
+    period: '2023.06 - 2023.08',
+    icon: '👦',
+    category: 'Volunteer',
+    title: '소프트웨어야 놀자 여름 캠프',
+    description: '네이버 주관 소프트웨어 교육 봉사',
+  },
+  {
+    period: '2022.03 - 2026.08',
     icon: '🎓',
-    label: '경희대학교 졸업 예정',
-    period: '2027.02',
+    category: 'Education',
+    title: '경희대학교 컴퓨터공학과',
+    description: '22학번',
+  },
+];
+
+const awardItems = [
+  {
+    period: '2023',
+    icon: '🏆',
+    category: 'Award',
+    title: '경희대학교 트랙 프로젝트',
+    description: '프로젝트 참여 및 우수상 수상',
+  },
+  {
+    period: '2022',
+    icon: '🏆',
+    category: 'Award',
+    title: '경희대학교 SW 페스티벌',
+    description: 'KHUSHARE 프로젝트 · 임베디드·앱 부문 주니어상 수상',
   },
 ];
 
 const aboutContent = parseAboutMarkdown(aboutMarkdown);
 
 const PageShell = styled.div`
+  display: flex;
+  flex-direction: column;
   min-height: calc(100vh - 4.5rem);
-  width: min(94%, 1240px);
+  width: min(94%, 1320px);
   margin: 0 auto;
-  padding: clamp(1.5rem, 4vw, 3.5rem) 0;
+  padding: clamp(1.5rem, 3vw, 2.75rem) 0 clamp(3rem, 6vw, 5rem);
 
   @media (min-width: ${theme.breakpoints.lg}) {
     display: grid;
-    grid-template-columns: minmax(180px, 2fr) minmax(0, 8fr);
-    gap: clamp(1.5rem, 3vw, 3rem);
+    grid-template-columns: minmax(150px, 1.45fr) minmax(0, 8.55fr);
+    gap: clamp(1.5rem, 2.6vw, 2.75rem);
     align-items: start;
   }
 `;
@@ -93,19 +138,31 @@ const PageShell = styled.div`
 const Sidebar = styled.aside`
   padding: 0;
 
+  @media (max-width: calc(${theme.breakpoints.lg} - 1px)) {
+    order: 2;
+    margin-top: ${theme.spacing.xl};
+    padding-top: ${theme.spacing.lg};
+    border-top: 1px solid ${theme.colors.borderStrong};
+  }
+
   @media (min-width: ${theme.breakpoints.lg}) {
     position: sticky;
-    top: 6.25rem;
+    top: 6rem;
   }
 `;
 
 const ProfileFrame = styled.div`
+  width: min(100%, 164px);
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   overflow: hidden;
   border: 1px solid ${theme.colors.border};
   background: ${theme.colors.muted};
-  margin-bottom: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.md};
+
+  @media (max-width: calc(${theme.breakpoints.lg} - 1px)) {
+    width: 112px;
+  }
 `;
 
 const ProfileImage = styled.img`
@@ -116,350 +173,443 @@ const ProfileImage = styled.img`
 
 const Name = styled.h1`
   color: ${theme.colors.heading};
-  font-size: clamp(1.4rem, 2.4vw, 1.8rem);
-  line-height: 1.08;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  line-height: 1.15;
   margin-bottom: ${theme.spacing.xs};
 `;
 
 const Role = styled.p`
   color: ${theme.colors.accent};
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 700;
   margin-bottom: ${theme.spacing.md};
 `;
 
 const SidebarSection = styled.section`
-  padding-top: ${theme.spacing.lg};
-  margin-top: ${theme.spacing.lg};
+  padding-top: 1.2rem;
+  margin-top: 1.2rem;
   border-top: 1px solid ${theme.colors.border};
 
   h2 {
     color: ${theme.colors.heading};
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     letter-spacing: 0.12em;
-    margin-bottom: ${theme.spacing.sm};
+    margin-bottom: 0.7rem;
     text-transform: uppercase;
   }
 `;
 
-const SkillGroup = styled.div`
-  & + & {
-    margin-top: ${theme.spacing.md};
-  }
-`;
-
-const SkillGroupTitle = styled.h3`
-  color: ${theme.colors.heading};
-  font-size: 0.85rem;
-  margin-bottom: ${theme.spacing.xs};
-`;
-
 const ResumeList = styled.div`
   display: grid;
-  gap: ${theme.spacing.sm};
+  gap: 0.8rem;
 `;
 
 const ResumeItem = styled.div`
   display: grid;
-  grid-template-columns: 1.35rem minmax(0, 1fr);
-  gap: ${theme.spacing.xs};
-  color: ${theme.colors.textMuted};
-  font-size: 0.76rem;
+  gap: 0.12rem;
+  color: ${theme.colors.text};
+  font-size: 0.73rem;
   line-height: 1.45;
-`;
-
-const ResumeIcon = styled.span`
-  line-height: 1.45;
-`;
-
-const ResumeText = styled.span`
-  display: grid;
-  gap: 0.15rem;
-  min-width: 0;
 `;
 
 const ResumePeriod = styled.span`
   color: ${theme.colors.textMuted};
-  font-size: 0.72rem;
+  font-size: 0.68rem;
 `;
 
-const SkillList = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${theme.spacing.sm};
-  list-style: none;
+const ResumeNote = styled.span`
+  color: ${theme.colors.textMuted};
+  font-size: 0.68rem;
 `;
 
-const SkillPill = styled.li`
-  border: 1px solid ${theme.colors.border};
-  border-radius: 999px;
+const SkillGroup = styled.div`
+  & + & {
+    margin-top: 0.7rem;
+  }
+`;
+
+const SkillGroupTitle = styled.h3`
+  color: ${theme.colors.textMuted};
+  font-size: 0.68rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+`;
+
+const SkillText = styled.p`
   color: ${theme.colors.text};
-  font-size: 0.75rem;
-  line-height: 1;
-  padding: 0.35rem 0.55rem;
-  background: ${theme.colors.muted};
+  font-size: 0.72rem;
+  line-height: 1.55;
 `;
 
 const ContactList = styled.div`
-  display: grid;
-  gap: ${theme.spacing.sm};
+  display: flex;
+  gap: 0.45rem;
 `;
 
 const ContactLink = styled.a`
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
-  min-height: 2.4rem;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
   border: 1px solid ${theme.colors.border};
-  border-radius: 8px;
+  border-radius: 6px;
   color: ${theme.colors.heading};
-  font-size: 0.82rem;
-  font-weight: 700;
-  padding: 0 ${theme.spacing.sm};
   background: ${theme.colors.background};
   transition:
     border-color ${theme.transitions.default},
-    color ${theme.transitions.default},
-    transform ${theme.transitions.default};
-
-  svg {
-    color: ${theme.colors.accent};
-    flex: 0 0 auto;
-  }
+    color ${theme.transitions.default};
 
   &:hover {
     border-color: ${theme.colors.accent};
     color: ${theme.colors.accent};
-    transform: translateY(-1px);
   }
 `;
 
 const ContentColumn = styled.div`
   min-width: 0;
-  margin-top: ${theme.spacing.lg};
+
+  @media (max-width: calc(${theme.breakpoints.lg} - 1px)) {
+    order: 1;
+  }
 
   @media (min-width: ${theme.breakpoints.lg}) {
-    margin-top: 0;
     border-left: 1px solid ${theme.colors.borderStrong};
-    padding-left: clamp(2rem, 4vw, 4rem);
+    padding-left: clamp(2rem, 3.5vw, 3.75rem);
   }
 `;
 
 const IntroSection = styled.section`
   scroll-margin-top: 6rem;
-  padding-bottom: clamp(2rem, 5vw, 4rem);
+  padding-bottom: clamp(1.75rem, 3vw, 2.75rem);
 `;
 
 const Eyebrow = styled.p`
   color: ${theme.colors.accent};
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.14em;
-  margin-bottom: ${theme.spacing.sm};
+  margin-bottom: 0.65rem;
   text-transform: uppercase;
 `;
 
 const IntroTitle = styled.h2`
   color: ${theme.colors.heading};
-  font-size: clamp(1.6rem, 3vw, 2.65rem);
-  line-height: 1.12;
-  max-width: 820px;
-  margin-bottom: ${theme.spacing.lg};
+  font-size: clamp(1.55rem, 2.8vw, 2.35rem);
+  line-height: 1.25;
+  max-width: 880px;
+  margin-bottom: ${theme.spacing.md};
 `;
 
 const IntroText = styled.div`
   display: grid;
-  gap: ${theme.spacing.md};
-  max-width: 780px;
+  gap: 0.55rem;
+  max-width: 820px;
   color: ${theme.colors.text};
-  font-size: clamp(0.95rem, 1.55vw, 1.05rem);
-  line-height: 1.8;
+  font-size: clamp(0.86rem, 1.3vw, 0.94rem);
+  line-height: 1.7;
 `;
 
-const HighlightGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: ${theme.spacing.md};
-  margin-top: ${theme.spacing.xl};
-`;
-
-const Highlight = styled.div`
-  border-top: 3px solid ${theme.colors.accent};
-  background: ${theme.colors.surface};
-  border-radius: 8px;
-  padding: ${theme.spacing.lg};
-  box-shadow: 0 14px 34px rgba(17, 24, 39, 0.06);
-
-  strong {
-    display: flex;
-    align-items: center;
-    gap: ${theme.spacing.sm};
-    color: ${theme.colors.heading};
-    font-size: 1.2rem;
-    margin-bottom: ${theme.spacing.xs};
-  }
-
-  span {
-    color: ${theme.colors.textMuted};
-    font-size: 0.9rem;
-  }
-`;
-
-const HighlightIcon = styled.span`
-  font-size: 1.15rem;
-  line-height: 1;
-`;
-
-const PortfolioSection = styled.section`
+const ExperienceSection = styled.section`
   scroll-margin-top: 6rem;
-  padding-top: clamp(2rem, 5vw, 4rem);
+  padding-top: clamp(1.75rem, 3vw, 2.75rem);
+  border-top: 1px solid ${theme.colors.border};
+`;
+
+const ActivitiesSection = styled.section`
+  scroll-margin-top: 6rem;
+  margin-top: clamp(1.75rem, 3vw, 2.75rem);
+  padding-top: clamp(1.75rem, 3vw, 2.75rem);
   border-top: 1px solid ${theme.colors.border};
 `;
 
 const SectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: ${theme.spacing.lg};
-  align-items: end;
-  margin-bottom: ${theme.spacing.lg};
-
-  @media (max-width: ${theme.breakpoints.sm}) {
-    display: block;
-  }
+  margin-bottom: 0.8rem;
 `;
 
 const SectionTitle = styled.h2`
   color: ${theme.colors.heading};
-  font-size: clamp(1.55rem, 3.5vw, 2.15rem);
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
 `;
 
-const ProjectGrid = styled.div`
+const CareerList = styled.div`
   display: grid;
-  gap: ${theme.spacing.md};
 `;
 
-const ProjectCard = styled(motion.a)`
+const CareerItem = styled.article`
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: ${theme.spacing.md};
-  border: 1px solid ${theme.colors.border};
-  border-radius: 8px;
-  background: ${theme.colors.surface};
-  padding: clamp(1rem, 2vw, 1.35rem);
-  box-shadow: 0 14px 34px rgba(17, 24, 39, 0.06);
-  transition:
-    border-color ${theme.transitions.default},
-    box-shadow ${theme.transitions.default},
-    transform ${theme.transitions.default};
+  grid-template-columns: 105px minmax(0, 1fr);
+  gap: clamp(0.75rem, 1.2vw, 1rem);
+  padding: 1.5rem 0;
+  border-top: 1px solid ${theme.colors.border};
 
-  @media (min-width: ${theme.breakpoints.md}) {
-    grid-template-columns: minmax(180px, 0.34fr) minmax(0, 0.66fr);
-    align-items: center;
+  &:first-of-type {
+    border-top: 0;
   }
 
-  &:hover {
-    border-color: ${theme.colors.accent};
-    box-shadow: 0 18px 42px rgba(17, 24, 39, 0.1);
-    transform: translateY(-2px);
+  @media (max-width: ${theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
   }
 `;
 
-const ProjectThumbnail = styled.div<{ imageUrl?: string }>`
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(185, 28, 28, 0.18), rgba(17, 24, 39, 0.08)),
-    ${theme.colors.muted};
-  border: 1px solid ${theme.colors.border};
-
-  ${props =>
-    props.imageUrl
-      ? `
-        background:
-          linear-gradient(180deg, rgba(17, 24, 39, 0.02), rgba(17, 24, 39, 0.24)),
-          url(${props.imageUrl}) center / cover no-repeat;
-      `
-      : ''}
+const CareerMeta = styled.div`
+  color: ${theme.colors.textMuted};
+  font-size: 0.72rem;
+  line-height: 1.55;
 `;
 
-const ProjectBody = styled.div`
+const CareerPeriod = styled.p`
+  color: ${theme.colors.heading};
+  font-size: 0.76rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+`;
+
+const CareerBody = styled.div`
   min-width: 0;
 `;
 
-const ProjectTitle = styled.h3`
-  color: ${theme.colors.heading};
-  font-size: clamp(1.12rem, 2.5vw, 1.38rem);
-  margin-bottom: ${theme.spacing.sm};
+const CareerContent = styled.div`
+  display: grid;
+  grid-template-columns: minmax(210px, 0.42fr) minmax(0, 1fr);
+  gap: 0.8rem clamp(1rem, 1.8vw, 1.5rem);
+  align-items: stretch;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
-const ProjectInfo = styled.div`
+const CareerDetails = styled.div`
+  min-width: 0;
+`;
+
+const CareerTitle = styled.h3`
+  color: ${theme.colors.heading};
+  font-family: ${theme.fonts.heading};
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.4;
+`;
+
+const CareerThumbnail = styled.img`
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+  border: 1px solid ${theme.colors.border};
+  border-radius: 6px;
+  background: ${theme.colors.muted};
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    grid-column: 1;
+    grid-row: auto;
+    max-width: 32rem;
+  }
+`;
+
+const WorksLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  grid-column: 2;
+  justify-self: end;
+  gap: 0.55rem;
+  min-height: 2.4rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 6px;
+  background: ${theme.colors.heading};
+  color: ${theme.colors.textDark};
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition:
+    background-color ${theme.transitions.default},
+    transform ${theme.transitions.default};
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    grid-column: 1;
+  }
+
+  svg {
+    flex: 0 0 auto;
+    font-size: 0.68rem;
+    transition: transform ${theme.transitions.default};
+  }
+
+  &:hover {
+    background: ${theme.colors.accent};
+    transform: translateY(-1px);
+
+    svg {
+      transform: translateX(3px);
+    }
+  }
+`;
+
+const CareerSummary = styled.p`
+  color: ${theme.colors.text};
+  font-size: 0.86rem;
+  line-height: 1.7;
+  margin-top: 0.55rem;
+`;
+
+const HighlightList = styled.ul`
   display: grid;
-  gap: ${theme.spacing.sm};
+  gap: 0.3rem;
+  margin-top: 0.75rem;
+  padding-left: 1rem;
+  color: ${theme.colors.text};
+  font-size: 0.82rem;
+  line-height: 1.65;
+
+  li::marker {
+    color: ${theme.colors.accent};
+  }
+`;
+
+const TechList = styled.p`
+  color: ${theme.colors.textMuted};
+  font-size: 0.72rem;
+  line-height: 1.6;
+  margin-top: 0.8rem;
+`;
+
+const EmptyState = styled.p`
+  border-top: 1px solid ${theme.colors.border};
+  color: ${theme.colors.textMuted};
+  padding: ${theme.spacing.lg} 0;
+`;
+
+const ActivityList = styled.div`
+  display: grid;
+  gap: 0.35rem;
+`;
+
+const ActivityColumns = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.xl};
+  }
+`;
+
+const ActivityColumn = styled.div<{ $divided?: boolean }>`
+  min-width: 0;
+  padding: 0 clamp(1rem, 2.5vw, 2.25rem);
+  border-right: ${({ $divided }) => ($divided ? `1px solid ${theme.colors.borderStrong}` : '0')};
+
+  &:first-of-type {
+    padding-left: 0;
+  }
+
+  &:last-of-type {
+    padding-right: 0;
+  }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    padding: 0;
+    border-right: 0;
+  }
+`;
+
+const ActivityColumnTitle = styled.h2`
+  color: ${theme.colors.heading};
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
   margin-bottom: ${theme.spacing.md};
 `;
 
-const ProjectInfoRow = styled.p`
-  color: ${theme.colors.text};
-  font-size: 0.95rem;
-  line-height: 1.75;
+const ActivityItem = styled.article`
+  display: grid;
+  grid-template-columns: 105px minmax(0, 1fr);
+  gap: clamp(0.75rem, 1.2vw, 1rem);
+  padding: 0.65rem 0;
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
 `;
 
-const ProjectDate = styled.p`
+const ActivityPeriod = styled.p`
   color: ${theme.colors.textMuted};
-  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.55;
+  white-space: nowrap;
+`;
+
+const ActivityBody = styled.div`
+  min-width: 0;
+`;
+
+const ActivityType = styled.p`
+  display: flex;
   align-items: center;
-  gap: ${theme.spacing.xs};
-  font-size: 0.82rem;
-  margin-top: ${theme.spacing.md};
+  gap: 0.35rem;
+  color: ${theme.colors.accent};
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+
+  span {
+    font-size: 0.78rem;
+    line-height: 1;
+  }
 `;
 
-const EmptyState = styled.div`
-  border: 1px dashed ${theme.colors.borderStrong};
-  border-radius: 8px;
+const ActivityTitle = styled.h3`
+  color: ${theme.colors.heading};
+  font-size: 0.92rem;
+  line-height: 1.45;
+`;
+
+const ActivityDescription = styled.p`
   color: ${theme.colors.textMuted};
-  padding: ${theme.spacing.xl};
-  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  margin-top: 0.15rem;
 `;
 
 export const HomePage = () => {
   return (
     <PageShell>
-      <Sidebar id="contact" aria-label="Profile, skills, and contact">
+      <Sidebar id="contact" aria-label="프로필, 학력, 기술 및 연락처">
         <ProfileFrame>
           <ProfileImage
             src={profilePhoto}
-            alt="Portrait of Hyoeun Hwang"
+            alt="황효은 프로필 사진"
           />
         </ProfileFrame>
         <Name>Hyoeun Hwang</Name>
         <Role>Backend Developer</Role>
 
-        <SidebarSection aria-labelledby="resume-title">
-          <h2 id="resume-title">Experience</h2>
+        <SidebarSection aria-labelledby="education-title">
+          <h2 id="education-title">Education</h2>
           <ResumeList>
-            {experienceItems.map((item) => (
+            {educationItems.map((item) => (
               <ResumeItem key={`${item.label}-${item.period}`}>
-                <ResumeIcon aria-hidden="true">{item.icon}</ResumeIcon>
-                <ResumeText>
-                  <span>{item.label}</span>
-                  <ResumePeriod>{item.period}</ResumePeriod>
-                </ResumeText>
+                <strong>{item.label}</strong>
+                <ResumePeriod>{item.period}</ResumePeriod>
+                <ResumeNote>{item.note}</ResumeNote>
               </ResumeItem>
             ))}
           </ResumeList>
         </SidebarSection>
 
         <SidebarSection aria-labelledby="skills-title">
-          <h2 id="skills-title">Skill Set</h2>
+          <h2 id="skills-title">Skills</h2>
           {skillGroups.map((group) => (
             <SkillGroup key={group.label}>
               <SkillGroupTitle>{group.label}</SkillGroupTitle>
-              <SkillList aria-label={`${group.label} skills`}>
-                {group.items.map((item) => (
-                  <SkillPill key={item}>{item}</SkillPill>
-                ))}
-              </SkillList>
+              <SkillText>{group.items.join(' · ')}</SkillText>
             </SkillGroup>
           ))}
         </SidebarSection>
@@ -473,9 +623,10 @@ export const HomePage = () => {
                 href={link.href}
                 target={link.href.startsWith('http') ? '_blank' : undefined}
                 rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                aria-label={link.label}
+                title={link.label}
               >
                 {link.icon}
-                <span>{link.label}</span>
               </ContactLink>
             ))}
           </ContactList>
@@ -483,77 +634,114 @@ export const HomePage = () => {
       </Sidebar>
 
       <ContentColumn>
-        <IntroSection id="about" aria-label="About Hyoeun Hwang">
-          <Eyebrow>About</Eyebrow>
-          <IntroTitle>
-            {aboutContent.title}
-          </IntroTitle>
+        <IntroSection id="about" aria-label="황효은 소개">
+          <Eyebrow>Backend Developer</Eyebrow>
+          <IntroTitle>{aboutContent.title}</IntroTitle>
           <IntroText>
             {aboutContent.paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </IntroText>
-          <HighlightGrid aria-label="Portfolio highlights">
-            {aboutContent.values.map((value) => (
-              <Highlight key={value.title}>
-                <strong>
-                  {value.icon ? (
-                    <HighlightIcon aria-hidden="true">{value.icon}</HighlightIcon>
-                  ) : null}
-                  {value.title}
-                </strong>
-                <span>{value.description}</span>
-              </Highlight>
-            ))}
-          </HighlightGrid>
         </IntroSection>
 
-        <PortfolioSection id="portfolio" aria-label="Portfolio projects">
+        <ExperienceSection id="experience" aria-label="My Works">
           <SectionHeader>
-            <div>
-              <Eyebrow>Portfolio</Eyebrow>
-              <SectionTitle>My Works</SectionTitle>
-            </div>
+            <Eyebrow>Selected Projects</Eyebrow>
+            <SectionTitle>My Works</SectionTitle>
           </SectionHeader>
 
           {featuredPosts.length === 0 ? (
-            <EmptyState>
-              No featured posts yet. Add markdown files under content/posts.
-            </EmptyState>
+            <EmptyState>등록된 프로젝트가 없습니다.</EmptyState>
           ) : (
-            <ProjectGrid role="list">
+            <CareerList>
               {featuredPosts.map((project) => (
-                <ProjectCard
-                  key={project.slug}
-                  href={buildPostHref(project.slug)}
-                  role="listitem"
-                  aria-label={`${project.title} 상세 페이지로 이동`}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35 }}
-                >
-                  <ProjectThumbnail
-                    imageUrl={project.coverImage}
-                    aria-hidden="true"
-                  />
-                  <ProjectBody>
-                    <ProjectTitle>{project.title}</ProjectTitle>
-                    <ProjectInfo>
-                      <ProjectInfoRow>{project.summary}</ProjectInfoRow>
-                    </ProjectInfo>
-                    {project.formattedDate ? (
-                      <ProjectDate>
-                        <span aria-hidden="true">📅</span>
-                        <span>{project.formattedDate}</span>
-                      </ProjectDate>
-                    ) : null}
-                  </ProjectBody>
-                </ProjectCard>
+                <CareerItem key={project.slug}>
+                  <CareerMeta>
+                    <CareerPeriod>{project.period || project.formattedDate}</CareerPeriod>
+                    {project.affiliation ? <p>{project.affiliation}</p> : null}
+                    {project.teamSize ? <p>{project.teamSize}</p> : null}
+                  </CareerMeta>
+                  <CareerBody>
+                    <CareerContent>
+                      {project.coverImage ? (
+                        <CareerThumbnail
+                          src={project.coverImage}
+                          alt={`${project.title} 화면`}
+                          loading="lazy"
+                        />
+                      ) : null}
+                      <CareerDetails>
+                        <CareerTitle>{project.title}</CareerTitle>
+                        <CareerSummary>{project.summary}</CareerSummary>
+                        {project.highlights.length > 0 ? (
+                          <HighlightList>
+                            {project.highlights.map((highlight) => (
+                              <li key={highlight}>{highlight}</li>
+                            ))}
+                          </HighlightList>
+                        ) : null}
+                        {project.techStack.length > 0 ? (
+                          <TechList>{project.techStack.join(' · ')}</TechList>
+                        ) : null}
+                      </CareerDetails>
+                      <WorksLink
+                        href={buildPostHref(project.slug)}
+                        aria-label={`${project.title} 상세 페이지로 이동`}
+                      >
+                        <span>Detail</span>
+                        <FaArrowRight aria-hidden="true" />
+                      </WorksLink>
+                    </CareerContent>
+                  </CareerBody>
+                </CareerItem>
               ))}
-            </ProjectGrid>
+            </CareerList>
           )}
-        </PortfolioSection>
+        </ExperienceSection>
+
+        <ActivitiesSection id="activities" aria-label="활동 및 수상 경력">
+          <SectionHeader>
+            <Eyebrow>Beyond Projects</Eyebrow>
+          </SectionHeader>
+          <ActivityColumns>
+            <ActivityColumn $divided>
+              <ActivityColumnTitle>Activities</ActivityColumnTitle>
+              <ActivityList>
+                {activityItems.map((item) => (
+                  <ActivityItem key={`${item.period}-${item.title}-${item.description}`}>
+                    <ActivityPeriod>{item.period}</ActivityPeriod>
+                    <ActivityBody>
+                      <ActivityType>
+                        <span aria-hidden="true">{item.icon}</span>
+                        {item.category}
+                      </ActivityType>
+                      <ActivityTitle>{item.title}</ActivityTitle>
+                      <ActivityDescription>{item.description}</ActivityDescription>
+                    </ActivityBody>
+                  </ActivityItem>
+                ))}
+              </ActivityList>
+            </ActivityColumn>
+            <ActivityColumn>
+              <ActivityColumnTitle>Awards</ActivityColumnTitle>
+              <ActivityList>
+                {awardItems.map((item) => (
+                  <ActivityItem key={`${item.period}-${item.title}-${item.description}`}>
+                    <ActivityPeriod>{item.period}</ActivityPeriod>
+                    <ActivityBody>
+                      <ActivityType>
+                        <span aria-hidden="true">{item.icon}</span>
+                        {item.category}
+                      </ActivityType>
+                      <ActivityTitle>{item.title}</ActivityTitle>
+                      <ActivityDescription>{item.description}</ActivityDescription>
+                    </ActivityBody>
+                  </ActivityItem>
+                ))}
+              </ActivityList>
+            </ActivityColumn>
+          </ActivityColumns>
+        </ActivitiesSection>
       </ContentColumn>
     </PageShell>
   );
@@ -563,12 +751,10 @@ function parseAboutMarkdown(markdown: string): AboutContent {
   const lines = markdown.replace(/\r\n/g, '\n').split('\n');
   const title = lines.find((line) => line.startsWith('# '))?.replace(/^#\s+/, '').trim() || '';
   const introSection = extractSection(lines, '소개');
-  const valueSection = extractSection(lines, '핵심 가치관');
 
   return {
     title,
     paragraphs: collectParagraphs(introSection),
-    values: collectValues(valueSection),
   };
 }
 
@@ -598,48 +784,4 @@ function collectParagraphs(lines: string[]) {
     .split(/\n\s*\n/)
     .map((paragraph) => paragraph.replace(/\s+/g, ' ').trim())
     .filter(Boolean);
-}
-
-function collectValues(lines: string[]) {
-  const values: AboutValue[] = [];
-  let currentTitle = '';
-  let currentIcon = '';
-  let currentLines: string[] = [];
-
-  const flushValue = () => {
-    if (!currentTitle) {
-      return;
-    }
-
-    const description = collectParagraphs(currentLines).join(' ');
-
-    values.push({
-      icon: currentIcon,
-      title: currentTitle,
-      description,
-    });
-  };
-
-  lines.forEach((line) => {
-    if (line.startsWith('### ')) {
-      flushValue();
-      currentTitle = line.replace(/^###\s+/, '').trim();
-      currentIcon = '';
-      currentLines = [];
-      return;
-    }
-
-    const icon = line.match(/^이모티콘\s*:\s*(.+)$/);
-
-    if (icon) {
-      currentIcon = icon[1].trim();
-      return;
-    }
-
-    currentLines.push(line);
-  });
-
-  flushValue();
-
-  return values;
 }

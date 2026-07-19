@@ -3,6 +3,9 @@ title: "Project Title"
 slug: "project-title"
 date: "2026-05-12"
 featured: true
+period: "YYYY.MM - YYYY.MM"
+affiliation: "소속"
+teamSize: "N인 프로젝트"
 coverImage: ""
 githubUrl: "https://github.com/your-account/your-repository"
 liveUrl: "https://your-project-url.example"
@@ -10,6 +13,8 @@ techStack:
   - React
   - TypeScript
 summary: ""
+highlights:
+  - "핵심 성과 또는 기여"
 # If summary is empty, the first paragraph in the body is used automatically.
 ---
 
