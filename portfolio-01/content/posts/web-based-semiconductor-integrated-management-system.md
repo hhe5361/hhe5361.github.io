@@ -26,7 +26,7 @@ highlights:
 
 ## 프로젝트 개요
 - **==Period==** : 2025.03 - 2026.08
-- **==Environment==** : 폐쇄망, Linux 서버, 4 Core CPU·8GB RAM 클라이언트
+- **==Environment==** : 폐쇄망, Linux 서버, 하드웨어 가속 장치가 없는 저사양 클라이언트 환경
 - **==Tech Stack==** : Java, Spring Boot, C++, Go, React, WebRTC, Docker, MySQL
 **==Contribution==** : 30%
 
@@ -164,8 +164,8 @@ VNC Component의 경우 팀원이, API Server의 경우 제가 맡아 각각 스
 #### Problem
 
 - 60채널 멀티뷰 요청 시 브라우저가 최대 60개의 H.264 스트림을 각각 디코딩하며 발생하는 클라이언트 병목 문제
-- 당시 클라이언트는 4Core 8GB 램의 별도의 하드웨어 디코딩이 없는 환경이었기에 성능 최적화를 통해 시스템 안정성을 도모하고자 함
-- 기존 구조는 VNC Component 서버와 60개의 개별 스트림을 H.264로 인코딩 후 WebRTC Session을 각각 연결하는 구조
+- 당시 클라이언트는 하드웨어 디코딩이 없는 저사양 환경이었기에 성능 최적화를 통해 시스템 안정성을 도모하고자 함
+- 기존 구조는 VNC Component 서버와 개별 스트림 각각을 H.264로 인코딩 후 WebRTC Session을 각각 연결하는 구조
 
 #### Analyze
 
