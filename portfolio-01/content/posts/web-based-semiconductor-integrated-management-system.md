@@ -35,13 +35,6 @@ highlights:
 시스템은 주요 비즈니스 API를 담당하는 **Java/Spring Boot API 서버**와 영상 수집·변환·송출을 담당하는 **C++/Go 기반 스트리밍 컴포넌트**로 구성되어 있습니다.
 
 
-- API 서버는 사용자, 채팅, 로그, 장비 및 스트림 상태 관리 기능을 제공하며, VNC 컴포넌트와 사전에 정의한 Stream Event를 기반으로 각 장비의 스트리밍 상태를 추적하여 클라이언트에 전달합니다.
-
-- 각 반도체 장비에서는 VNC Server가 동작하며, C++ 기반 VNC Proxy가 RFB 프로토콜을 통해 장비 화면의 framebuffer를 수신합니다. 수신한 화면은 인코딩 후 파일 형태로 저장되며, 이후 Go 기반 스트리머가 이를 WebRTC로 송출합니다. 하나의 VNC Component는 최대 60대의 장비 스트리밍을 처리하도록 구성되어 있습니다.
-
-- 웹 클라이언트에서는 WebSocket 기반 VNC 연결을 통해 장비 화면을 원격 제어하고, WebRTC를 이용해 여러 장비의 화면을 동시에 모니터링할 수 있습니다.
-
-
 ![웹 기반 장비 모니터링 시스템 아키텍처](/portfolio/web-monitoring/system-architecture.png)
 
 ## 주요 담당 업무
