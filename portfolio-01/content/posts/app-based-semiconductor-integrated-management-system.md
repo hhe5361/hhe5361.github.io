@@ -22,7 +22,7 @@ highlights:
 
 ## 프로젝트 개요
 - **==Period==** : 2025.09 - 2026.08
-- **==Client Environment==** : 폐쇄망, Windows, 4 Core CPU·8GB RAM VDI
+- **==Client Environment==** : 폐쇄망, Windows, 하드웨어 가속 장치가 없는 저사양 클라이언트 환경
 - **==Tech Stack==** : C#, .NET / WPF / ASP.NET Core, FFmpeg, VNC, LibVNC, RTSP, SQLite
 **==Contribution==** : 60%
 
@@ -32,16 +32,12 @@ highlights:
 각 반도체 장비에는 VNC 서버가 가동되어 모듈에 RFB 프로토콜을 통해 화면을 제공하고, CCTV는 RTSP를 통해 모듈에 영상을 제공합니다. 
 클라이언트 앱에서는 주로 반도체 장비 녹화 조회 및 다중 스트리밍 기능을 지원합니다.    
 
-외부망이 차단된 폐쇄망과 **하드웨어 가속 장치가 없는 4Core 8GB RAM VDI 클라이언트 환경**에서도 안정적으로 동작하도록 보장하는 것이 주요 안건이었습니다.
+외부망이 차단된 폐쇄망과 **하드웨어 가속 장치가 없는 저사양 클라이언트 환경**에서도 안정적으로 동작하도록 보장하는 것이 주요 안건이었습니다.
 이에 기존 미디어 서버와 클라이언트 사이의 스트리밍 구조를 개선해 성능 최적화 작업을 진행했습니다. 이외에는 현장 이슈 대응 및 추가 기능 요구 사항에 대한 유지보수를 주로 진행했습니다.
 
 ### 프로젝트 기능 구조도
 
 ![프로젝트 기능 구조도](/portfolio/realtime-monitoring/system-architecture.png)
-
-### 시스템 아키텍처
-
-![시스템 아키텍처](/portfolio/realtime-monitoring/system-architecture-detail.png)
 
 ## 주요 담당 업무
 
