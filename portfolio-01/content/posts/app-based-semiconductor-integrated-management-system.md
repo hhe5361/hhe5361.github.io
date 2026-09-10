@@ -21,7 +21,7 @@ highlights:
 ---
 
 ## 프로젝트 개요
-- **==Period==** : 2025.08 - 2026.08
+- **==Period==** : 2025.09 - 2026.08
 - **==Client Environment==** : 폐쇄망, Windows, 4 Core CPU·8GB RAM VDI
 - **==Tech Stack==** : C#, .NET / WPF / ASP.NET Core, FFmpeg, VNC, LibVNC, RTSP, SQLite
 **==Contribution==** : 60%
