@@ -69,6 +69,12 @@ const ProjectCard = styled(motion.article)`
   height: 100%;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 3px solid ${theme.colors.accent};
+    outline-offset: 3px;
+  }
 
   &:hover {
     transform: translateY(-5px);
@@ -289,6 +295,22 @@ const Projects = () => {
                   variants={itemVariants}
                   role="listitem"
                   aria-labelledby={`project-title-${project.slug}`}
+                  tabIndex={0}
+                  onClick={(event) => {
+                    if ((event.target as HTMLElement).closest('a')) {
+                      return;
+                    }
+
+                    window.location.href = buildPostHref(project.slug);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.target !== event.currentTarget || (event.key !== 'Enter' && event.key !== ' ')) {
+                      return;
+                    }
+
+                    event.preventDefault();
+                    window.location.href = buildPostHref(project.slug);
+                  }}
                 >
                   <ProjectImage
                     imageUrl={project.coverImage}

@@ -3,7 +3,6 @@ import {
   FaArrowRight,
   FaEnvelope,
   FaGithub,
-  FaLinkedin,
 } from 'react-icons/fa';
 import aboutMarkdown from '/content/about.md?raw';
 import profilePhoto from '../assets/profile-photo-updated.jpeg';
@@ -20,32 +19,31 @@ interface AboutContent {
 const skillGroups = [
   {
     label: 'Language',
-    items: ['Python', 'Java', 'Go', 'C++', 'C#'],
+    items: ['Java', 'Kotlin', 'Go', 'C#', 'C++', 'Python'],
   },
   {
     label: 'Framework',
-    items: ['.NET', 'Gin', 'Spring'],
+    items: ['Spring', 'Gin', '.NET', 'FastAPI'],
   },
   {
     label: 'DevOps',
-    items: ['AWS', 'Docker'],
+    items: ['Docker', 'Docker Compose', 'AWS', 'GitHub Actions'],
+  },
+  {
+    label: 'Tools',
+    items: ['Git', 'Codex', 'Claude'],
   },
 ];
 
 const contactLinks = [
   {
     label: 'GitHub',
-    href: 'https://github.com',
+    href: 'https://github.com/hhe5361',
     icon: <FaGithub aria-hidden="true" />,
   },
   {
-    label: 'LinkedIn',
-    href: 'https://linkedin.com',
-    icon: <FaLinkedin aria-hidden="true" />,
-  },
-  {
     label: 'Email',
-    href: 'mailto:your.email@example.com',
+    href: 'mailto:hhe5361@naver.com',
     icon: <FaEnvelope aria-hidden="true" />,
   },
 ];
@@ -53,23 +51,37 @@ const contactLinks = [
 const educationItems = [
   {
     label: '경희대학교 컴퓨터공학과',
-    period: '2022.03 - 2026.08',
-    note: '22학번',
+    period: '2022.03 - 2027.02',
+    note: '졸업 예정 · 학점 3.69/4.3 · 전공 3.76/4.3',
   },
   {
     label: 'ICNS 컨티뉴엄 클라우드 컴퓨팅 연구실',
-    period: '2024.11 - 현재',
-    note: '학부연구생',
+    period: '2024.11 - 2026.08',
+    note: '학부연구생 · 기술 이전 과제 및 AI Workload Network 연구',
   },
 ];
 
 const activityItems = [
   {
-    period: '2024.11 - 현재',
+    period: '2025.03 - 2025.12',
+    icon: '💻',
+    category: 'Community',
+    title: 'ACC 경희대 3기',
+    description: 'AWS Hands-on 세션 참여',
+  },
+  {
+    period: '2024.11 - 2026.08',
     icon: '📚',
     category: 'Research',
     title: 'ICNS 컨티뉴엄 클라우드 컴퓨팅 연구실',
-    description: '경희대학교 학부연구생',
+    description: '기술 이전 과제 및 AI Workload Network 연구 · 학부연구생',
+  },
+  {
+    period: '2024.09 - 2025.02',
+    icon: '💻',
+    category: 'Community',
+    title: 'UMC 동아리 Spring 파트',
+    description: 'Spring 스터디 참여 · 웹 프로젝트 진행 · 부스 운영',
   },
   {
     period: '2024.03 - 2024.06',
@@ -79,38 +91,52 @@ const activityItems = [
     description: '코드클럽 주관 소프트웨어 교육 봉사',
   },
   {
-    period: '2023.12 - 2024.02',
+    period: '2023.12',
     icon: '👦',
     category: 'Volunteer',
     title: '소프트웨어야 놀자 겨울 캠프',
     description: '네이버 주관 소프트웨어 교육 봉사',
   },
   {
-    period: '2023.06 - 2023.08',
+    period: '2023.08',
     icon: '👦',
     category: 'Volunteer',
     title: '소프트웨어야 놀자 여름 캠프',
     description: '네이버 주관 소프트웨어 교육 봉사',
   },
   {
-    period: '2022.03 - 2026.08',
+    period: '2023.03 - 2026.08',
+    icon: '💻',
+    category: 'Community',
+    title: '학술 동아리 다솜',
+    description: '교육부장 · C++ 교육',
+  },
+  {
+    period: '2022.03 - 2027.02',
     icon: '🎓',
     category: 'Education',
     title: '경희대학교 컴퓨터공학과',
-    description: '22학번',
+    description: '졸업 예정',
   },
 ];
 
 const awardItems = [
   {
-    period: '2023',
+    period: '2026.08',
+    icon: '🏆',
+    category: 'Award',
+    title: '다솜 해커톤',
+    description: '최우수상 수상',
+  },
+  {
+    period: '2023.12',
     icon: '🏆',
     category: 'Award',
     title: '경희대학교 트랙 프로젝트',
-    description: '프로젝트 참여 및 우수상 수상',
+    description: '우수상 수상',
   },
   {
-    period: '2022',
+    period: '2022.11',
     icon: '🏆',
     category: 'Award',
     title: '경희대학교 SW 페스티벌',
@@ -348,6 +374,12 @@ const CareerItem = styled.article`
   gap: clamp(0.75rem, 1.2vw, 1rem);
   padding: 1.5rem 0;
   border-top: 1px solid ${theme.colors.border};
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 3px solid ${theme.colors.accent};
+    outline-offset: 3px;
+  }
 
   &:first-of-type {
     border-top: 0;
@@ -595,7 +627,7 @@ export const HomePage = () => {
           />
         </ProfileFrame>
         <Name>Hyoeun Hwang</Name>
-        <Role>Backend Developer</Role>
+        <Role>Software Developer</Role>
 
         <SidebarSection aria-labelledby="education-title">
           <h2 id="education-title">Education</h2>
@@ -641,7 +673,7 @@ export const HomePage = () => {
 
       <ContentColumn>
         <IntroSection id="about" aria-label="황효은 소개">
-          <Eyebrow>Backend Developer</Eyebrow>
+          <Eyebrow>Software Developer</Eyebrow>
           <IntroTitle>{aboutContent.title}</IntroTitle>
           <IntroText>
             {aboutContent.paragraphs.map((paragraph) => (
@@ -733,7 +765,26 @@ function ProjectCollection({ eyebrow, title, projects }: ProjectCollectionProps)
       ) : (
         <CareerList>
           {projects.map((project) => (
-            <CareerItem key={project.slug}>
+            <CareerItem
+              key={project.slug}
+              tabIndex={0}
+              aria-label={`${project.title} 상세 페이지로 이동`}
+              onClick={(event) => {
+                if ((event.target as HTMLElement).closest('a')) {
+                  return;
+                }
+
+                window.location.href = buildPostHref(project.slug);
+              }}
+              onKeyDown={(event) => {
+                if (event.target !== event.currentTarget || (event.key !== 'Enter' && event.key !== ' ')) {
+                  return;
+                }
+
+                event.preventDefault();
+                window.location.href = buildPostHref(project.slug);
+              }}
+            >
               <CareerMeta>
                 <CareerPeriod>{project.period || project.formattedDate}</CareerPeriod>
                 {project.affiliation ? <p>{project.affiliation}</p> : null}

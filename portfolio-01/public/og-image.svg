@@ -6,7 +6,7 @@
   <rect x="120" y="130" width="136" height="48" rx="24" fill="#F6B17A"/>
   <text x="188" y="162" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Portfolio</text>
   <text x="120" y="270" font-family="Inter, Arial, sans-serif" font-size="66" font-weight="800" fill="#F8FAFC">Hyoeun Hwang</text>
-  <text x="120" y="338" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="600" fill="#CBD5E1">Backend Developer</text>
+  <text x="120" y="338" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="600" fill="#CBD5E1">Software Developer</text>
   <text x="120" y="402" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="400" fill="#94A3B8">Projects focused on backend systems, streaming,</text>
   <text x="120" y="438" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="400" fill="#94A3B8">maintenance, and operational reliability.</text>
   <rect x="786" y="166" width="224" height="224" rx="32" fill="#0B1220" stroke="#334155"/>

@@ -6,6 +6,13 @@ import { visualizer } from 'rollup-plugin-visualizer'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
+  server: {
+    watch: {
+      // Windows-mounted working directories can miss native file watch events.
+      usePolling: true,
+      interval: 300,
+    },
+  },
   plugins: [
     react({
       babel: {

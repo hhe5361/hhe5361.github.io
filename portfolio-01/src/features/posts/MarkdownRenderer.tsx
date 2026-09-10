@@ -11,6 +11,7 @@ type MarkdownBlock =
   | { type: 'table'; header: string[]; rows: string[][] }
   | { type: 'code'; language: string; content: string }
   | { type: 'image'; alt: string; src: string }
+  | { type: 'spacer' }
   | { type: 'divider' };
 
 const Content = styled.div`
@@ -46,9 +47,53 @@ const Content = styled.div`
     color: ${theme.colors.heading};
   }
 
+  .issue-heading {
+    color: ${theme.colors.accent};
+    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+    font-weight: 800;
+  }
+
+  .step-heading {
+    color: ${theme.colors.accent};
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .measurement-heading {
+    color: ${theme.colors.heading};
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
   p {
     font-size: 0.95rem;
     line-height: 1.8;
+  }
+
+  p:has(> em:only-child) {
+    color: ${theme.colors.textMuted};
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin-top: -${theme.spacing.sm};
+  }
+
+  > figure {
+    display: grid;
+    gap: ${theme.spacing.xs};
+    justify-items: center;
+    margin: 0;
+  }
+
+  > figure figcaption {
+    color: ${theme.colors.textMuted};
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .content-spacer {
+    height: ${theme.spacing.md};
   }
 
   ul,
@@ -65,8 +110,16 @@ const Content = styled.div`
     margin: 0 0 ${theme.spacing.sm};
   }
 
-  li strong:first-child {
-    color: ${theme.colors.accent};
+  li > strong:only-child {
+    color: #2563eb;
+  }
+
+  .blue-highlight {
+    color: #2563eb;
+  }
+
+  .measurement-heading + ul li strong:first-child {
+    color: ${theme.colors.heading};
   }
 
   table {
@@ -123,7 +176,8 @@ const Content = styled.div`
 
   hr {
     border: none;
-    border-top: 1px solid ${theme.colors.border};
+    border-top: 1px solid ${theme.colors.borderStrong};
+    margin: ${theme.spacing.lg} 0 ${theme.spacing.sm};
   }
 
   img {
@@ -173,12 +227,25 @@ const ImageGrid = styled.div`
 `;
 
 const SummaryImage = styled.img`
-  width: auto;
-  max-width: min(100%, 760px);
-  height: auto;
-  max-height: 32rem;
-  justify-self: center;
-  object-fit: contain;
+  && {
+    width: 100%;
+    max-width: min(100%, 1040px);
+    height: auto;
+    max-height: none;
+    justify-self: center;
+    object-fit: contain;
+  }
+`;
+
+const TableGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: ${theme.spacing.md};
+  align-items: start;
+
+  table {
+    margin-top: 0;
+  }
 `;
 
 const MediaGallery = styled.div<{ $pair: boolean }>`
@@ -275,7 +342,16 @@ function parseMarkdown(markdown: string): MarkdownBlock[] {
     const trimmed = line.trim();
 
     if (!trimmed) {
-      index += 1;
+      const blankLineStart = index;
+
+      while (index < lines.length && !lines[index].trim()) {
+        index += 1;
+      }
+
+      if (index - blankLineStart >= 2 && blocks.length > 0 && index < lines.length) {
+        blocks.push({ type: 'spacer' });
+      }
+
       continue;
     }
 
@@ -303,6 +379,12 @@ function parseMarkdown(markdown: string): MarkdownBlock[] {
 
     if (/^---+$/.test(trimmed) || /^\*\*\*+$/.test(trimmed)) {
       blocks.push({ type: 'divider' });
+      index += 1;
+      continue;
+    }
+
+    if (/^<!--\s*space\s*-->$/i.test(trimmed)) {
+      blocks.push({ type: 'spacer' });
       index += 1;
       continue;
     }
@@ -421,27 +503,29 @@ function renderBlock(block: MarkdownBlock, index: number) {
 
   switch (block.type) {
     case 'heading': {
+      const className = getHeadingClassName(block.content);
+
       if (block.level === 1) {
-        return <h1 key={key}>{renderInline(block.content, key)}</h1>;
+        return <h1 key={key} className={className}>{renderInline(block.content, key)}</h1>;
       }
 
       if (block.level === 2) {
-        return <h2 key={key}>{renderInline(block.content, key)}</h2>;
+        return <h2 key={key} className={className}>{renderInline(block.content, key)}</h2>;
       }
 
       if (block.level === 3) {
-        return <h3 key={key}>{renderInline(block.content, key)}</h3>;
+        return <h3 key={key} className={className}>{renderInline(block.content, key)}</h3>;
       }
 
       if (block.level === 4) {
-        return <h4 key={key}>{renderInline(block.content, key)}</h4>;
+        return <h4 key={key} className={className}>{renderInline(block.content, key)}</h4>;
       }
 
       if (block.level === 5) {
-        return <h5 key={key}>{renderInline(block.content, key)}</h5>;
+        return <h5 key={key} className={className}>{renderInline(block.content, key)}</h5>;
       }
 
-      return <h6 key={key}>{renderInline(block.content, key)}</h6>;
+      return <h6 key={key} className={className}>{renderInline(block.content, key)}</h6>;
     }
     case 'paragraph':
       return <p key={key}>{renderInline(block.content, key)}</p>;
@@ -496,7 +580,14 @@ function renderBlock(block: MarkdownBlock, index: number) {
         </div>
       );
     case 'image':
-      return <img key={key} src={block.src} alt={block.alt} />;
+      return (
+        <figure key={key}>
+          <img src={block.src} alt={block.alt} />
+          <figcaption>{block.alt}</figcaption>
+        </figure>
+      );
+    case 'spacer':
+      return <div key={key} className="content-spacer" aria-hidden="true" />;
     case 'divider':
       return <hr key={key} />;
     default:
@@ -509,6 +600,27 @@ function renderBlockSequence(blocks: MarkdownBlock[], keyPrefix: string) {
   let index = 0;
 
   while (index < blocks.length) {
+    if (blocks[index].type === 'table') {
+      const tables: Extract<MarkdownBlock, { type: 'table' }>[] = [];
+
+      while (index < blocks.length && blocks[index].type === 'table') {
+        tables.push(blocks[index] as Extract<MarkdownBlock, { type: 'table' }>);
+        index += 1;
+      }
+
+      if (tables.length > 1) {
+        nodes.push(
+          <TableGrid key={`${keyPrefix}-table-grid-${index}`}>
+            {tables.map((table, tableIndex) => renderBlock(table, tableIndex))}
+          </TableGrid>,
+        );
+      } else {
+        nodes.push(renderBlock(tables[0], index - 1));
+      }
+
+      continue;
+    }
+
     if (blocks[index].type === 'image') {
       const images: Extract<MarkdownBlock, { type: 'image' }>[] = [];
 
@@ -517,7 +629,7 @@ function renderBlockSequence(blocks: MarkdownBlock[], keyPrefix: string) {
         index += 1;
       }
 
-      const hasArchitectureImage = images.some((image) => /architecture|아키텍처|개념도/i.test(image.alt));
+      const hasArchitectureImage = images.some((image) => /architecture|아키텍처|개념도|구조도/i.test(image.alt));
 
       if (images.length === 1 && hasArchitectureImage) {
         const image = images[0];
@@ -569,6 +681,27 @@ function renderBlocks(blocks: MarkdownBlock[]) {
       }
     }
 
+    if (block.type === 'table') {
+      const tables: Extract<MarkdownBlock, { type: 'table' }>[] = [];
+
+      while (index < blocks.length && blocks[index].type === 'table') {
+        tables.push(blocks[index] as Extract<MarkdownBlock, { type: 'table' }>);
+        index += 1;
+      }
+
+      if (tables.length > 1) {
+        nodes.push(
+          <TableGrid key={`table-grid-${index}`}>
+            {tables.map((table, tableIndex) => renderBlock(table, tableIndex))}
+          </TableGrid>,
+        );
+      } else {
+        nodes.push(renderBlock(tables[0], index - 1));
+      }
+
+      continue;
+    }
+
     if (block.type === 'image') {
       const images: Extract<MarkdownBlock, { type: 'image' }>[] = [];
 
@@ -600,6 +733,22 @@ function renderBlocks(blocks: MarkdownBlock[]) {
   }
 
   return nodes;
+}
+
+function getHeadingClassName(content: string) {
+  if (/^성능 모니터링 기준$/i.test(content)) {
+    return 'measurement-heading';
+  }
+
+  if (/^Issue\s+\d+/i.test(content)) {
+    return 'issue-heading';
+  }
+
+  if (/^(Problem|Analyze|Action|Result|Situation|Task)$/i.test(content)) {
+    return 'step-heading';
+  }
+
+  return undefined;
 }
 
 function isSummarySectionHeading(block: MarkdownBlock) {
@@ -665,6 +814,13 @@ function renderInline(content: string, keyPrefix: string): ReactNode[] {
       case 'strong':
         nodes.push(<strong key={key}>{renderInline(token.match[1], key)}</strong>);
         break;
+      case 'highlight':
+        nodes.push(
+          <span key={key} className="blue-highlight">
+            {renderInline(token.match[1], key)}
+          </span>,
+        );
+        break;
       case 'emphasis':
         nodes.push(<em key={key}>{renderInline(token.match[1], key)}</em>);
         break;
@@ -688,6 +844,7 @@ function isTableDividerLine(line: string) {
 
 function parseTableBlock(lines: string[]): Extract<MarkdownBlock, { type: 'table' }> {
   const rows = lines
+    .filter((line, index) => index === 0 || !isTableDividerLine(line))
     .map((line) =>
       line
         .trim()
@@ -712,6 +869,7 @@ function findNextToken(content: string) {
     { type: 'link', regex: /\[([^\]]+)]\(([^)]+)\)/ },
     { type: 'code', regex: /`([^`]+)`/ },
     { type: 'strong', regex: /\*\*([^*]+)\*\*/ },
+    { type: 'highlight', regex: /==([^=]+)==/ },
     { type: 'strike', regex: /~~([^~]+)~~/ },
     { type: 'emphasis', regex: /\*([^*]+)\*/ },
   ] as const;

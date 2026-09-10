@@ -22,7 +22,9 @@ function App() {
   const isPostView = requestedPostSlug !== null;
 
   useEffect(() => {
-    document.title = activePost ? `${activePost.title} | Portfolio` : 'Portfolio';
+    document.title = activePost
+      ? `${activePost.title} | 황효은 포트폴리오`
+      : '황효은 | Software Developer Portfolio';
   }, [activePost]);
 
   return (
